@@ -1,0 +1,55 @@
+---
+title: '订单通知'
+---
+
+### 通知url
+
+通知地址：`发起请求时的notify_url`
+
+` 代付订单处理成功或失败都会发送异步通知，需要判断返回结果里的 status 参数为成功或失败做后续的处理`
+
+### 通知回调参数
+
+| 参数名                | 必选  |类型|说明|
+|:-------------------|:----|:----- |-----|
+| mch_id             | 是   |string |商户号  |
+| mch_order_no       | 是   |string |商户订单号 |
+| order_no           | 是   |string |系统订单号 |
+| currency           | 是   |string | 币种  |
+| amount             | 是   |string | 金额  |
+| fee                | 是   |string | 手续费 |
+| receipt            | 否   |string | 支付凭证 |
+| status             | 是   |string | 代付状态  PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败；|
+| paid_at            | 否   |int | 付款时间，毫秒时间戳  |
+| error            | 否   |string | 交易失败时的错误提示，其它状态为空字符串 |
+| sign               | 是   |string | 签名 |
+
+
+
+### 异步通知示例
+`异步发送post json请求`
+
+```{
+    "mch_id": "12345678", //商户号
+    "mch_order_no": "47791232007162150200884444", //商户订单号
+    "order_no": "MP20200801170409575199514949", //系统订单号
+    "currency": "USD", // 订单币种
+    "amount": "100.00", //订单金额
+    "fee": "2.00", //代付手续费
+    "status": "SUCCESS",
+    "paid_at": 1597124856123, // 付款时间
+    "error": "", // 错误信息
+    "receipt": "http://abc.com/abc.jpg", //如有，支付成功时的交易凭证
+    "sign": "1235e535956e6c288b6fdcae4522a13a" //签名
+}
+```
+
+
+`逻辑处理成功需响应字符串 success, 处理失败需返回 fail 或其它提示`
+
+### 通知回调响应结果
+
+|返回值|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+|SUCCESS |是  |string | 成功，不再继续通知  |
+|fail/other |是  |string | 非成功，则会继续尝试通知5次，分次间隔为3/9/27/81/243秒 |

@@ -1,0 +1,75 @@
+---
+title: '签名算法'
+---
+
+### 签名算法说明
+```
+一、组装参数:
+    假设所有发送者接收到的数据为集合 M，将集合 M 内非空值的参数，按照参数名 ASCII 码从小到大排
+序 ( 字典序 )，使用 URL 键值对的格式拼接成字符串 str："key1=value1&key2=value2&key3=value3..."
+特别注意以下重要规则：
+1. 参数名 ASCII 码从小到大排序 ( 字典序 )。
+2. 参数名区分大小写。
+3. 不参与签名的参数：
+    传送的参数名 sign
+二、拼接商户密钥:
+    在 str 最后拼接上 商户密钥，并对str以商户密钥进行 md5运算得到sign值。
+```
+
+
+### PHP参考代码
+```
+
+function sign($data, $secret){
+	ksort($data);
+	$param = [];
+	foreach ($data as $k => $v) {
+			array_push($param, $k . '=' . $v);
+	}
+	$queryString = implode('&', $param);
+	return md5($queryString . $secret);
+}
+
+```
+
+
+### JAVA 参考代码
+```
+		public static String sign(Map<String, Object> data, String secret) {
+				// 按键排序
+				SortedMap<String, Object> sortedData = new TreeMap<>(data);
+
+				// 构建参数字符串
+				StringBuilder param = new StringBuilder();
+				for (Map.Entry<String, Object> entry : sortedData.entrySet()) {
+						String key = entry.getKey();
+						Object value = entry.getValue();
+						// 如果值是整数，转换为字符串
+						String valueStr = value instanceof Integer ? String.valueOf(value) : value.toString();
+
+						// 拼接参数
+						if (param.length() > 0) {
+								param.append("&");
+						}
+						param.append(key).append("=").append(valueStr);
+				}
+
+				// 拼接密钥并计算 MD5
+				String queryString = param.toString() + secret;
+				return md5(queryString);
+		}
+
+		private static String md5(String input) {
+				try {
+						java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+						byte[] array = md.digest(input.getBytes("UTF-8"));
+						StringBuilder sb = new StringBuilder();
+						for (byte b : array) {
+								sb.append(String.format("%02x", b));
+						}
+						return sb.toString();
+				} catch (Exception e) {
+						throw new RuntimeException("MD5 calculation error", e);
+				}
+		}
+```

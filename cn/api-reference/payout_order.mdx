@@ -1,0 +1,65 @@
+## 代付-统一下单
+
+**通道描述：**
+
+
+| 通道名称  | 通道编码   | 备注      | 营业时间 |
+|:------|:-------|:--------|:------|
+| 银行卡   | bank   | 银行渠道代付  | 00:00~23:59 |
+| 支付宝   | alipay | 支付宝代付   | 00:00~23:59 |
+| 微信    | wechat | 微信代付    | 00:00~23:59 |
+| Gcash | gcash  | Gcash代付 | 00:00~23:59 |
+
+**请求URL：**
+- `接口域名/gateway/payment/create`
+
+**请求方式：**
+- POST
+
+**请求参数：**
+
+| 参数名          | 必选  |类型| 说明                         |
+|:-------------|:----|:----- |----------------------------|
+| mch_id       | 是   |string | 商户号                        |
+| out_order_no | 是   |string | 商户订单号                      |
+| channel_code | 是   |string | 通道编码                       |
+| account_name | 是   |string | 收款人开户名                     |
+| account_no   | 是   |string | 收款人账号：如gcash、支付宝、微信账号、银行账号 |
+| amount       | 是   |string | 订单金额，单位元，两位小数              |
+| notify_url   | 否   |string | 异步通知地址，也可以自行使用定时查询的方式      |
+| province     | 否   |string | 【选填】【银行卡渠道】所在省(如无，则填北京)    |
+| city         | 否   |string | 【选填】【银行卡渠道】所在市如无，则填北京市     |
+| bank_name    | 否   |string | 【选填】【银行卡渠道】银行名称            |
+| bank_branch  | 否   |string | 【选填】【银行卡渠道】支行信息            |
+| currency     | 否   |string | 【选填】默认CNY,支持【CNY,PHP】      |
+| timestamp    | 是   |string | unix时间戳                    |
+| version      | 是   |string | 接口版本: v2.0                 |
+| sign         | 是   |string | 最后追加的签名                    |
+
+**返回参数data说明：**
+
+| 参数名         |必选|类型|说明|
+|:------------|:---|:----- |-----   |
+| mch_id      |是  |string |商户号   |
+| amount      |是  |string |代付金额 |
+| fee         |是  |string |手续费 |
+| order_no    |是  |string |平台订单号 |
+| out_order_no|是  |string |商户订单号 |
+| timestamp   |是  |string |创建时间 |
+
+**返回示例**
+
+```
+{
+    "code": 0,  // int 0为成功，其它都为失败
+    "message": "操作成功",  // 成功或失败信息，失败可弹出此消息提示
+    "data": {
+        "mch_id": "X3DSKDKII2343",
+        "amount": "100.00",
+        "fee": "3.6000",    // 本笔订单收取的手续费
+        "order_no": "202007070427475133333",    // 平台订单号
+        "out_order_no": "R898543254325432",     // 商户订单号
+        "timestamp": 1594223433     // 平台订单创建时间
+    }
+}
+```

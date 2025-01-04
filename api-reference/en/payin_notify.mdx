@@ -1,0 +1,47 @@
+---
+title: 'Notify'
+---
+
+### Notify URL
+
+* Notify URL：`notify_url`
+
+### Notify Parameter
+
+| Parameter | Must    | Type  |  Explanation  |
+|:--------------|:---|:-------|--------------------------------------------|
+| mch_id        |Yes  | string | Merchant ID                                        |
+| mch_order_no  |Yes  | string | Merchant Order NO.                                        |
+| status        |Yes  | string | PENDING； DEALING；CLOSED； SUCCESS；FAIL； REFUND；|
+| currency      |Yes  | string | Currency                      |
+| amount        |Yes  | string | Amount                      |
+| paid_at       |Yes  | int    | timestamp millisecond                    |
+| error         |Yes  | string | Error Info                                    |
+| sign          |Yes  | string | Signature                                         |
+
+
+### 商户接收的数据示例
+
+```
+{
+    "mch_id": "MCH12345678",
+    "mch_order_no": "20200708135806101549897485",
+    "status": "SUCCESS",
+    "currency": "USD",
+    "amount": "11.11",
+    "fee": "0.11",
+    "paid_at": 1594187989123,
+    "error": "",
+    "sign": "1235e535956e6c288b6fdcae4522a13a"
+}
+
+```
+
+
+### Response
+`The merchant should return a response of  SUCCESS or FAIL`
+
+| Response | Must    | Type  |  Explanation  |
+|:----    |:---|:----- |-----   |
+|SUCCESS |YES  |string | if return SUCCESS ，We will not notify merchant more!  |
+|FAIL/other |YES  |string | if return others，We will notify 5times，The intervals are 3/9/27/81/243 seconds.|

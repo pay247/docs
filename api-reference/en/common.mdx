@@ -1,0 +1,61 @@
+---
+title: 'Introduction'
+---
+
+<Note>
+	This document is the only official documentation for Pay247. Updates to the capabilities provided by the Pay247 API will be continuously published here, so please stay tuned.
+
+	If you encounter any issues or have suggestions during use, feel free to contact us through the following methods:
+	Email: dev@pay247.io
+</Note>
+
+
+### Request Method: POST
+
+### Request Header:
+```
+"Content-Type":"application/json;charset=UTF-8"
+```
+
+### Request Header:
+```
+"Content-Type":"application/json;charset=UTF-8"
+```
+
+### Timezone
+
+The timezone used by the API is ```UTC+8```
+
+### Common parameters
+
+* common request parameters
+
+| Parameter | Must    | Type  |  Explanation    | Example         |
+|:----------|:------|:----|:-------|:-----------|
+| mch_id    | YES     | string   | 商户号 | SVSPYS63XM10042 |
+| timestamp | YES     | int   | 请求时间戳 | 1594047539321 |
+| version   | YES     | string   | 版本 | v1.0 |
+| uuid  | YES  | string   | 请求ID     |  550e8400-e29b-41d4-a716-446655440000 |
+| sign      | YES     | string   | 签名     |b05a16b1e92aa4948e164b747b5749b4 |
+
+* common response parameters
+
+| Parameter | Must    | Type  |  Explanation    | Example         |
+|:--------|-----|:--------|---------------|:-----------------|
+| code    | YES   | int     | code , see dict below  | 0                |
+| message | YES   | string  | message     | success             |
+| uuid  | YES  | string   | request uuid     |  550e8400-e29b-41d4-a716-446655440000 |
+| timestamp  | YES  | int   | timestamp     |  1599047539321 |
+| data    | YES   | mixed   | data          |   |
+
+
+### Dict
+
+* code
+
+| code  | Explanation   |
+|:-----|:-----|
+| 0    | success   |
+| 4000 | Invaild Paramters |
+| 4001 | The mch order no is repeated|
+| 5000 | System error |

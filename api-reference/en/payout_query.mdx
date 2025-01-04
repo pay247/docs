@@ -1,0 +1,56 @@
+---
+title: 'Query'
+---
+
+### Request URL
+- `{BaseURL}/gateway/payout/query `
+
+### Request Method
+- POST
+### Request Parameters
+
+| Parameter | Must    | Type  |  Explanation  |
+|:------------|:---|:----- |------   |
+| mch_id      |Yes  |string |Merchant ID   |
+| mch_order_no|Yes  |string | Merchant Order NO. |
+| timestamp   |Yes  |string | timestamp millisecond  |
+| version     |Yes  |string | v1.0 |
+|uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign        |Yes  |string | Signature |
+
+
+### Response data
+
+| Parameter | Must    | Type  |  Explanation  |
+|:----|:---|:-----|-----|
+|mch_id |Yes  |string |Merchant ID   |
+|mch_order_no |Yes  |string |Merchant Order no |
+|order_no |Yes  |string |System Order no  |
+|currency |Yes  |string |Currency |
+|amount |Yes  |string |Amount |
+|fee |Yes  |string |Fee |
+|status |Yes  |status | PENDING, DEALING, CLOSED, SUCCESS, FAIL |
+|receipt |No  |string |Receipt if success, maybe have|
+| paid_at            | No  |int | Paid time，timestamp millisecond  |
+|error |No |string | If the order status is FAIL, will have error info |
+
+### For example
+
+```
+{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "mch_id": "817710000",
+    "mch_order_no": "202007070427475133333",
+    "order_no": "202007070427475133333",
+    "currency": "USD",
+    "amount": "100.00",
+    "fee": "3.60",
+    "status": "SUCCESS",
+    "receipt": "",
+    "error": "",
+    "paid_at": 1594223433123
+  }
+}
+```

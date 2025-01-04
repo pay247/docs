@@ -1,0 +1,56 @@
+---
+title: 'Notify'
+---
+
+### Notify url
+
+Notify URL：`notify_url`
+
+`when the order status become SUCCESS OR FAIL OR CLOSED , will notify the merchant`
+
+### Notify Parameters
+`POST JSON`
+
+| Parameter | Must    | Type  |  Explanation  |
+|:-------------------|:----|:----- |-----|
+| mch_id             | Yes   |string |Merchant Id  |
+| mch_order_no       | Yes   |string |Merchant Order NO. |
+| order_no           | Yes   |string |System Order NO. |
+| currency           | Yes   |string | Currency  |
+| amount             | Yes   |string | Amount  |
+| fee                | Yes   |string | Fee |
+| receipt            | No   |string | Receipt |
+|status |Yes  |status | PENDING, DEALING, CLOSED, SUCCESS, FAIL |
+| paid_at            | No   |int | Paid time，timestamp millisecond  |
+| error            | Yes   |string | If the order fail, will have error info |
+| sign               | Yes   |string | Signature |
+
+
+
+### For example
+`POST JSON`
+
+```{
+    "mch_id": "12345678",
+    "mch_order_no": "47791232007162150200884444",
+    "order_no": "MP20200801170409575199514949",
+    "currency": "USD",
+    "amount": "100.00",
+    "fee": "2.00",
+    "status": "SUCCESS",
+    "paid_at": 1597124856123,
+    "error": "",
+    "receipt": "http://abc.com/abc.jpg",
+    "sign": "1235e535956e6c288b6fdcae4522a13a"
+}
+```
+
+
+
+### Response
+`The merchant should return a response of  SUCCESS or FAIL`
+
+| Parameter | Must    | Type  |  Explanation  |
+|:----    |:---|:----- |-----   |
+|SUCCESS |YES  |string | if return SUCCESS ，We will not notify merchant more!  |
+|FAIL/other |YES  |string | if return others，We will notify 5times，The intervals are 3/9/27/81/243 seconds.|

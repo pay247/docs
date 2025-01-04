@@ -1,0 +1,78 @@
+---
+title: '钱包余额'
+---
+
+**请求URL：**
+- `{BaseURL}/gateway/balance `
+
+**请求方式：**
+- POST
+
+**请求参数：**
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+|mch_id |是  |string |商户号   |
+|timestamp |是  |string | unix时间戳  |
+|version |是  |string | 接口版本: v1.0 |
+|uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
+|sign |是  |string | 最后追加的签名 |
+
+
+**返回参数data**
+
+|参数名|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+|mch_id |是  |string |商户号   |
+|wallets |是  |array |所有钱包余额 |
+
+**返回示例**
+
+```
+{
+    "code": 0,
+    "message": "success",
+    "uuid": "2ae0f1b3-2dc3-4488-83ac-eaa8bed6d56e",
+    "timestamp": 1735969840196,
+    "data": {
+        "mch_id": "PQSKDPKVVV10001",
+        "wallets": [
+            {
+                "balance": "11120.0000",
+                "freeze": "0.0000",
+                "currency": "CNY"
+            },
+            {
+                "balance": "120.0000",
+                "freeze": "0.0000",
+                "currency": "USD"
+            },
+            {
+                "balance": "30.0000",
+                "freeze": "0.0000",
+                "currency": "INR"
+            },
+            {
+                "balance": "0.0000",
+                "freeze": "0.0000",
+                "currency": "KRW"
+            },
+            {
+                "balance": "1000.0000",
+                "freeze": "0.0000",
+                "currency": "JPY"
+            },
+            {
+                "balance": "0.0000",
+                "freeze": "0.0000",
+                "currency": "PHP"
+            },
+            {
+                "balance": "0.0000",
+                "freeze": "0.0000",
+                "currency": "THB"
+            }
+        ]
+    }
+}
+```

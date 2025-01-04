@@ -1,0 +1,65 @@
+---
+title: 'Create'
+---
+
+### Request URL
+- `{BaseURL}/gateway/payout/create`
+
+### Request Method
+- POST
+
+### Request Parameters
+
+| Parameter | Must    | Type  |  Explanation  |
+|:-------------|:----|:----- |----------------------------|
+| mch_id       | Yes   |string | 商户号                        |
+| mch_order_no | Yes   |string | 商户订单号                      |
+| currency | Yes   |string | 通道编码                       |
+| amount       | Yes   |string | 订单金额，单位元，两位小数              |
+| pay_method   | No  |string | 支付方式，如果为空，自动选择可用的支付方式          |
+| account_name | Yes   |string | 收款人开户名                     |
+| account_no   | Yes   |string | 收款人账号：如gcash、grabpay, 支付宝、微信账号、银行账号 |
+| notify_url   | No   |string | 异步通知地址，也可以自行使用定时查询的方式      |
+| province     | No   |string | 【选填】【银行卡渠道】所在省(如无，则填北京)    |
+| city         | No   |string | 【选填】【银行卡渠道】所在市如无，则填北京市     |
+| bank_name    | No   |string | 【选填】【银行卡渠道】银行名称            |
+| bank_branch  | No   |string | 【选填】【银行卡渠道】支行信息            |
+| currency     | No   |string | 【选填】默认CNY,支持【CNY,PHP】      |
+| timestamp    | Yes   |string |  timestamp millisecond                    |
+| version      | Yes   |string |  v1.0                 |
+|uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign         | Yes   |string | 最后追加的签名                    |
+
+### Response data
+
+| Parameter | Must    | Type  |  Explanation  |
+|:------------|:---|:----- |-----   |
+| mch_id      |Yes  |string |Merchant ID   |
+| mch_order_no|Yes  |string |Merchant Order NO. |
+| order_no    |Yes  |string |Order NO. |
+| currency    |Yes  |string |Currency |
+| amount      |Yes  |string |Amount |
+| fee         |Yes  |string |Fee |
+| status      |Yes  |status | PENDING, DEALING, CLOSED, SUCCESS, FAIL |
+| paid_at     |No  |string |if the order SUCCESS, will have paid time|
+| error       |No  |string |if the order FAIL, maybe have error info |
+
+### For example
+
+```
+{
+    "code": 0,  // int 0为成功，其它都为失败
+    "message": "操作成功",  // 成功或失败信息，失败可弹出此消息提示
+    "data": {
+        "mch_id": "X3DSKDKII2343",
+        "mch_order_no": "R898543254325432",     // 商户订单号
+        "order_no": "202007070427475133333",    // 平台订单号
+        "currency": "USD",
+        "amount": "100.00",
+    		"status": "PENDING",
+        "fee": "3.60",    // 本笔订单收取的手续费
+        "paid_at": 1594223431233,     // 支付时间
+        "error": ""
+    }
+}
+```

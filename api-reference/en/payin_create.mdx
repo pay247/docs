@@ -1,0 +1,88 @@
+---
+title: 'Create'
+---
+
+### The payin flowchart
+
+![flowchart](./images/payin.jpg)
+
+###  请求URL
+
+- `{BaseURL}/gateway/payin/create`
+
+### 请求方式
+
+- POST
+
+### Req
+
+| Parameter | Must    | Type  |  Explanation  |
+|:-------------------|:----|:----- |----------------------------------|
+| mch_id             | Yes   |string | Merchant ID                              |
+| mch_order_no       | Yes   |string | 商户自生成订单号                         |
+| mch_user_id        | Yes   |string | 商户用户的唯一标识（如果想隐藏用户id明文，可以使用md5加密传递） |
+| currency           | Yes   |string | 支持【CNY,JPY,PHP,THD等】            |
+| amount             | Yes   |string | 99.11  单位元，支持到两位小数               |
+| pay_method         | No  |string | 支付方式，如果为空，自动选择可用的支付方式          |
+| client_ip          | Yes   |string | 下单用户的IP地址（一定要Yes用户的真实IP）           |
+| notify_url         | Yes   |string | 异步通知地址                           |
+| return_url         | No   |string | 同步跳转地址                           |
+| payee_id           | No  |string | 【依据相关渠道】付款人身份证号                |
+| payee_name         | No  |string | 【依据相关渠道】付款人姓名                 |
+| payee_phone        | No  |string | 【依据相关渠道】付款人手机号                 |
+| payee_bank_account | No  |string | 【依据相关渠道】 付款人银行卡号               |
+| timestamp          | Yes   |string | timestamp millisecond                     |
+| version            | Yes   |string | v1.0                       |
+|uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign               | Yes   |string | Signature                          |
+
+
+### 请求参数示例
+
+```
+{
+  "mch_id": "Q0P5T8DOGN10000",
+  "mch_order_no": "405189",
+  "currency": "CNY",
+  "amount": "100.00",
+  "channel_code": "wechat",
+  "client_ip": "8.8.8.8",
+  "notify_url": "https://x.com/notify",
+  "return_url": "https://x.com/return",
+  "timestamp": "1693233334",
+  "version": "v1.0",
+  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+}
+```
+
+| Parameter | Must    | Type  |  Explanation  |
+|:-------------|:---|:----- |--------------------|
+| order_no     |Yes  |string | 系统订单号              |
+| mch_order_no |Yes  |string | 商户订单号              |
+| currency     |Yes  |string | CNY, THD, PHP      |
+| amount       |Yes  |string | 99.00  单位元，支持到两位小数 |
+| channel_code |Yes  |string | 通道code，见文档上方通道描述部分 |
+| pay_url      |Yes  |string | 支付链接，获取后跳转         |
+| bank_name    |No  |string | 银行名                |
+| account_no   |No  |string | 账号                 |
+| account_name |No  |string | 账户名                |
+
+### For example
+
+```
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "23082822325936693122",
+    "order_no": "MO202308282232593669984082",
+    "currency": "USD",
+    "amount": "59.12",
+    "pay_method": "bank",
+    "payee_name": "",
+		"status": "PENDING",
+    "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
+  }
+}
+```

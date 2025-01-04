@@ -1,0 +1,56 @@
+---
+title: '查询订单'
+---
+
+### 请求URL
+- `{BaseURL}/gateway/payout/query `
+
+### 请求方式
+- POST
+### 请求参数
+
+| 参数名         |必选|类型|说明|
+|:------------|:---|:----- |------   |
+| mch_id      |是  |string |商户号   |
+| mch_order_no|是  |string | 商户订单号 |
+| timestamp   |是  |string | unix时间戳  |
+| version     |是  |string | 接口版本: v1.0 |
+|uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign        |是  |string | 最后追加的签名 |
+
+
+### 返回参数说明data
+
+|参数名|必选|类型|说明|
+|:----|:---|:-----|-----|
+|mch_id |是  |string |商户号   |
+|mch_order_no |是  |string |商户订单号 |
+|order_no |是  |string |系统订单号 |
+|currency |是  |string |订单币种 |
+|amount |是  |string |订单金额 |
+|fee |是  |string |手续费 |
+|status |是  |status |状态 PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； |
+|receipt |否  |string |交易凭证|
+|paid_at |否  |string |付款时间，毫秒时间戳|
+|error |否 |string |处理失败时的错误提示，其它状态可能为空字符串 |
+
+### 返回示例
+
+```
+{
+  "code": 0,
+  "message": "操作成功",
+  "data": {
+    "mch_id": "817710000",
+    "mch_order_no": "202007070427475133333",
+    "order_no": "202007070427475133333",
+    "currency": "USD",
+    "amount": "100.00",
+    "fee": "3.60",
+		"status": "PENDING",
+    "receipt": "",
+    "error": "",
+    "paid_at": 1594223433
+  }
+}
+```

@@ -1,0 +1,62 @@
+
+## 代收-订单通知
+
+**通知URL：**
+
+* 通知地址：`发起请求的notify_url`
+
+**通知回调参数**
+
+| 参数名           |必选| 类型     | 说明                                         |
+|:--------------|:---|:-------|--------------------------------------------|
+| mch_id        |是  | string | 商户号                                        |
+| out_order_no  |是  | string | 订单号                                        |
+| pay_status    |是  | int    | 支付状态  1 待支付  2 已支付/支付成功  3 订单超时未支付  4 冻结订单 |
+| amount        |是  | string | 订单金额，注意是 string 类型                         |
+| pay_timestamp |是  | int    | unix时间戳 支付时间                               |
+| error         |是  | string | 错误或失败信息                                    |
+| sign          |是  | string | 签名                                         |
+
+```
+
+需要判断 pay_status == 2 才执行下一步操作，当然 pay_status != 2 也不会发送通知
+商户接收的数据对象样例
+{
+    "mch_id": "12345678", //商户号
+    "out_order_no": "20200708135806101549897485", // 商户订单号
+    "pay_status": 2,
+    "amount": "1.0000", // 订单金额，部分通道可能会带四位小数
+    "pay_timestamp": 1594187989, // 支付时间戳
+    "sign": "1235e535956e6c288b6fdcae4522a13a" //签名
+}
+
+
+//请求参数数字字典排序
+ksort($data);
+
+unset($data['sign']);
+$param = [];
+foreach ($data as $k => $v) {
+    if ($v === '' || $v === null) {
+        continue;
+    }
+    array_push($param, $k . '=' . $v);
+}
+$queryString = implode('&', $param);
+
+$sign = md5($queryString . $mch_key); // 追加商户key
+
+//判断签名是否正确
+
+判断我们的签名和你的签名是否一致
+
+```
+
+\`注：逻辑处理成功响应字符串 SUCCESS，否则返回 FAIL 或其它提示\`
+
+**通知回调响应结果**
+
+|返回值|必选|类型|说明|
+|:----    |:---|:----- |-----   |
+|SUCCESS |是  |string | 成功，不再继续通知  |
+|fail/other |是  |string | 非成功，则会继续尝试通知5次，分次间隔为3/9/27/81/243秒 |

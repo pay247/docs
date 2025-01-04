@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Pay247 Documents",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/light.png",
+    "light": "/logo/light.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -18,74 +18,117 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "url": "mailto:dev@pay247.io"
     }
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://merchant.pay247.io/merchant"
   },
   "tabs": [
+    {
+      "name": "Documentation",
+      "url": "docs"
+    },
     {
       "name": "API Reference",
       "url": "api-reference"
     }
   ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
   "navigation": [
     {
       "group": "Get Started",
+      "version": "English",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "docs/en/introduction"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "接入准备",
+      "version": "中文",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "docs/cn/introduction"
       ]
     },
     {
-      "group": "API Documentation",
+      "version": "English",
+      "group": "Quickstart",
       "pages": [
-        "api-reference/introduction"
+        "api-reference/en/common",
+        "api-reference/en/sign"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "version": "English",
+      "group": "Balance",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/en/balance"
+      ]
+    },
+    {
+      "version": "English",
+      "group": "Payin",
+      "pages": [
+        "api-reference/en/payin_create",
+        "api-reference/en/payin_query",
+        "api-reference/en/payin_notify"
+      ]
+    },
+    {
+      "version": "English",
+      "group": "Payout",
+      "pages": [
+        "api-reference/en/payout_create",
+        "api-reference/en/payout_query",
+        "api-reference/en/payout_notify"
+      ]
+    },
+    {
+      "version": "中文",
+      "group": "快速开始",
+      "pages": [
+        "api-reference/cn/common",
+        "api-reference/cn/sign"
+      ]
+    },
+    {
+      "version": "中文",
+      "group": "钱包余额",
+      "pages": [
+        "api-reference/cn/balance"
+      ]
+    },
+    {
+      "version": "中文",
+      "group": "代收订单",
+      "pages": [
+        "api-reference/cn/payin_create",
+        "api-reference/cn/payin_query",
+        "api-reference/cn/payin_notify"
+      ]
+    },
+    {
+      "version": "中文",
+      "group": "代付订单",
+      "pages": [
+        "api-reference/cn/payout_create",
+        "api-reference/cn/payout_query",
+        "api-reference/cn/payout_notify"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
-  }
+    "website": "https://pay247.io"
+  },
+  "versions": [
+    {
+      "name": "English",
+      "locale": "en",
+      "default": true
+    },
+    {
+      "name": "中文",
+      "locale": "cn"
+    }
+  ]
 }

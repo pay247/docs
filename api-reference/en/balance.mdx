@@ -1,0 +1,78 @@
+---
+title: 'Query'
+---
+
+### Request URL
+- `{BaseURL}/gateway/balance `
+
+### Request Method
+- POST
+
+### Request Parameters
+
+| Parameter | Must    | Type  |  Explanation  |
+|:----    |:---|:----- |-----   |
+|mch_id |Yes  |string |Merchant ID   |
+|timestamp |Yes  |string | Timestamp  |
+|version |Yes  |string | v1.0 |
+|uuid  | Yes  | string   |Request UUID: 550e8400-e29b-41d4-a716-446655440000 |
+|sign |Yes  |string | Signature string |
+
+
+### Response data
+
+| Parameter | Must    | Type  |  Explanation  |
+|:----    |:---|:----- |-----   |
+|mch_id |Yes  |string |Merchant ID   |
+|wallets |Yes  |array |Wallets |
+
+### For example
+
+```
+{
+    "code": 0,
+    "message": "success",
+    "uuid": "2ae0f1b3-2dc3-4488-83ac-eaa8bed6d56e",
+    "timestamp": 1735969840196,
+    "data": {
+        "mch_id": "PQSKDPKVVV10001",
+        "wallets": [
+            {
+                "balance": "11120.0000",
+                "freeze": "0.0000",
+                "currency": "CNY"
+            },
+            {
+                "balance": "120.0000",
+                "freeze": "0.0000",
+                "currency": "USD"
+            },
+            {
+                "balance": "30.0000",
+                "freeze": "0.0000",
+                "currency": "INR"
+            },
+            {
+                "balance": "0.0000",
+                "freeze": "0.0000",
+                "currency": "KRW"
+            },
+            {
+                "balance": "1000.0000",
+                "freeze": "0.0000",
+                "currency": "JPY"
+            },
+            {
+                "balance": "0.0000",
+                "freeze": "0.0000",
+                "currency": "PHP"
+            },
+            {
+                "balance": "0.0000",
+                "freeze": "0.0000",
+                "currency": "THB"
+            }
+        ]
+    }
+}
+```

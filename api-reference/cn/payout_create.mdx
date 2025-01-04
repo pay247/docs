@@ -1,0 +1,71 @@
+---
+title: '创建订单'
+---
+
+<Note>
+	特别说明:
+	1. 在调用代付接口时，可能会遇到网络超时或未知异常（接口返回 code=5000），此时业务处理结果是未知的，需要稍后查询代付订单接口，获取订单最新状态。
+	2. 如果网络超时可以在2分钟后重试。
+</Note>
+
+### 请求URL
+- `{BaseURL}/gateway/payout/create`
+
+### 请求方式
+- POST
+
+### 请求参数
+
+| 参数名          | 必选  |类型| 说明                         |
+|:-------------|:----|:----- |----------------------------|
+| mch_id       | 是   |string | 商户号                        |
+| mch_order_no | 是   |string | 商户订单号                      |
+| currency | 是   |string | 通道编码                       |
+| amount       | 是   |string | 订单金额，单位元，两位小数              |
+| pay_method   | 否  |string | 支付方式，如果为空，自动选择可用的支付方式          |
+| account_name | 是   |string | 收款人开户名                     |
+| account_no   | 是   |string | 收款人账号：如gcash、grabpay, 支付宝、微信账号、银行账号 |
+| notify_url   | 否   |string | 异步通知地址，也可以自行使用定时查询的方式      |
+| province     | 否   |string | 【选填】【银行卡渠道】所在省(如无，则填北京)    |
+| city         | 否   |string | 【选填】【银行卡渠道】所在市如无，则填北京市     |
+| bank_name    | 否   |string | 【选填】【银行卡渠道】银行名称            |
+| bank_branch  | 否   |string | 【选填】【银行卡渠道】支行信息            |
+| currency     | 否   |string | 【选填】默认CNY,支持【CNY,PHP】      |
+| timestamp    | 是   |string | unix时间戳                    |
+| version      | 是   |string | 接口版本: v1.0                 |
+|uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign         | 是   |string | 最后追加的签名                    |
+
+### 返回参数data说明
+
+| 参数名         |必选|类型|说明|
+|:------------|:---|:----- |-----   |
+| mch_id      |是  |string |商户号   |
+| mch_order_no|是  |string |商户订单号 |
+| order_no    |是  |string |平台订单号 |
+| currency    |是  |string |订单币种 |
+| amount      |是  |string |订单金额 |
+| fee         |是  |string |手续费 |
+| status      |是  |string |订单状态，PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； |
+| paid_at     |否  |string |支付成功时，返回支付时间 |
+| error       |否  |string |支付失败时的错误信息 |
+
+**返回示例**
+
+```
+{
+    "code": 0,  // int 0为成功，其它都为失败
+    "message": "操作成功",  // 成功或失败信息，失败可弹出此消息提示
+    "data": {
+        "mch_id": "X3DSKDKII2343",
+        "mch_order_no": "R898543254325432",     // 商户订单号
+        "order_no": "202007070427475133333",    // 平台订单号
+        "currency": "USD",
+        "amount": "100.00",
+        "fee": "3.60",    // 本笔订单收取的手续费
+				"status": "PENDING",
+        "paid_at": 1594223431233,     // 支付时间
+        "error": ""
+    }
+}
+```
