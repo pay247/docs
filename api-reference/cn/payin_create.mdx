@@ -43,15 +43,16 @@ title: '创建订单'
 ```
 {
   "mch_id": "Q0P5T8DOGN10000",
-  "mch_order_no": "405189",
+  "mch_order_no": "TRADE-405189",
+  "mch_user_id": "U405189",
   "currency": "CNY",
   "amount": "100.00",
-  "channel_code": "wechat",
-  "client_ip": "8.8.8.8",
+  "pay_mehod": "GCASH",
   "notify_url": "https://x.com/notify",
   "return_url": "https://x.com/return",
-  "timestamp": "1693233334",
+  "timestamp": "1693233334134",
   "version": "v1.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
   "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
 }
 ```
@@ -74,6 +75,8 @@ title: '创建订单'
 {
   "code": 0,
   "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": "1693233334134",
   "data": {
     "mch_id": "MCH12345678",
     "mch_order_no": "23082822325936693122",
@@ -81,7 +84,7 @@ title: '创建订单'
     "currency": "USD",
     "amount": "59.12",
     "pay_method": "bank",
-    "payee_name": "",
+		"status": "PENDING",
     "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
   }
 }

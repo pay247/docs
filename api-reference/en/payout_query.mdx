@@ -15,7 +15,7 @@ title: 'Query'
 | mch_order_no|Yes  |string | Merchant Order NO. |
 | timestamp   |Yes  |string | timestamp millisecond  |
 | version     |Yes  |string | v1.0 |
-|uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
+| uuid        |Yes | string | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
 | sign        |Yes  |string | Signature |
 
 
@@ -31,7 +31,7 @@ title: 'Query'
 |fee |Yes  |string |Fee |
 |status |Yes  |status | PENDING, DEALING, CLOSED, SUCCESS, FAIL |
 |receipt |No  |string |Receipt if success, maybe have|
-| paid_at            | No  |int | Paid time，timestamp millisecond  |
+|paid_at | No  |int | Paid time，timestamp millisecond  |
 |error |No |string | If the order status is FAIL, will have error info |
 
 ### For example
@@ -47,6 +47,7 @@ title: 'Query'
     "currency": "USD",
     "amount": "100.00",
     "fee": "3.60",
+    "pay_method": "bank",
     "status": "SUCCESS",
     "receipt": "",
     "error": "",

@@ -12,26 +12,29 @@ title: 'Notify'
 |:--------------|:---|:-------|--------------------------------------------|
 | mch_id        |Yes  | string | Merchant ID                                        |
 | mch_order_no  |Yes  | string | Merchant Order NO.                                        |
-| status        |Yes  | string | PENDING； DEALING；CLOSED； SUCCESS；FAIL； REFUND；|
 | currency      |Yes  | string | Currency                      |
+| pay_method    |Yes  | string | Payment Methods                      |
 | amount        |Yes  | string | Amount                      |
-| paid_at       |Yes  | int    | timestamp millisecond                    |
+| status        |Yes  | string | PENDING； DEALING；CLOSED；SUCCESS；FAIL；REFUND；|
+| paid_at       |Yes  | int    | Timestamp millisecond                    |
 | error         |Yes  | string | Error Info                                    |
 | sign          |Yes  | string | Signature                                         |
 
 
-### 商户接收的数据示例
+### For Example
 
 ```
 {
     "mch_id": "MCH12345678",
     "mch_order_no": "20200708135806101549897485",
-    "status": "SUCCESS",
+		"order_no": "P20200707042747519753974832",
     "currency": "USD",
     "amount": "11.11",
+		"pay_method": "bank",
     "fee": "0.11",
     "paid_at": 1594187989123,
     "error": "",
+		"status": "SUCCESS",
     "sign": "1235e535956e6c288b6fdcae4522a13a"
 }
 

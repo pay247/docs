@@ -26,8 +26,6 @@ title: '创建订单'
 | account_name | 是   |string | 收款人开户名                     |
 | account_no   | 是   |string | 收款人账号：如gcash、grabpay, 支付宝、微信账号、银行账号 |
 | notify_url   | 否   |string | 异步通知地址，也可以自行使用定时查询的方式      |
-| province     | 否   |string | 【选填】【银行卡渠道】所在省(如无，则填北京)    |
-| city         | 否   |string | 【选填】【银行卡渠道】所在市如无，则填北京市     |
 | bank_name    | 否   |string | 【选填】【银行卡渠道】银行名称            |
 | bank_branch  | 否   |string | 【选填】【银行卡渠道】支行信息            |
 | currency     | 否   |string | 【选填】默认CNY,支持【CNY,PHP】      |
@@ -54,17 +52,19 @@ title: '创建订单'
 
 ```
 {
-    "code": 0,  // int 0为成功，其它都为失败
-    "message": "操作成功",  // 成功或失败信息，失败可弹出此消息提示
+    "code": 0,
+    "message": "Success",
+		"timestamp": 1594099906123,
+		"uuid": "7eb3c9e-5a1d-4a19-be2a-c80eac39830a",
     "data": {
         "mch_id": "X3DSKDKII2343",
-        "mch_order_no": "R898543254325432",     // 商户订单号
-        "order_no": "202007070427475133333",    // 平台订单号
+        "mch_order_no": "R898543254325432",
+        "order_no": "202007070427475133333",
         "currency": "USD",
         "amount": "100.00",
-        "fee": "3.60",    // 本笔订单收取的手续费
-				"status": "PENDING",
-        "paid_at": 1594223431233,     // 支付时间
+    		"status": "PENDING",
+        "fee": "3.60",
+        "paid_at": 1594223431233,
         "error": ""
     }
 }

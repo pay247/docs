@@ -24,14 +24,17 @@ title: '订单通知'
 
 ```
 {
-    "mch_id": "MCH12345678", //商户号
-    "mch_order_no": "20200708135806101549897485", // 商户订单号
-    "status": "SUCCESS",
+    "mch_id": "MCH12345678",
+    "mch_order_no": "20200708135806101549897485",
+		"order_no": "P20200707042747519753974832",
     "currency": "USD",
-    "amount": "1.11", // 订单金额，部分通道可能会带四位小数
-    "paid_at": 1594187989123, // 支付时间戳
+    "amount": "11.11",
+		"pay_method": "bank",
+    "fee": "0.11",
+    "paid_at": 1594187989123,
     "error": "",
-    "sign": "1235e535956e6c288b6fdcae4522a13a" //签名
+		"status": "SUCCESS",
+    "sign": "1235e535956e6c288b6fdcae4522a13a"
 }
 
 ```
