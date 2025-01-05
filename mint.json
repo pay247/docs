@@ -115,6 +115,12 @@
         "api-reference/cn/payout_query",
         "api-reference/cn/payout_notify"
       ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "api-reference/common/bank_ph"
+      ]
     }
   ],
   "footerSocials": {
