@@ -22,7 +22,7 @@ title: '创建订单'
 | mch_id             | 是   |string | 商户号                              |
 | mch_order_no       | 是   |string | 商户自生成订单号                         |
 | mch_user_id        | 是   |string | 商户用户的唯一标识（如果想隐藏用户id明文，可以使用md5加密传递） |
-| currency           | 是   |string | 支持【CNY,JPY,PHP,THD等】            |
+| currency           | 是   |string | 支持【CNY,JPY,PHP,THD等 ，更多参考商户后台】            |
 | amount             | 是   |string | 99.11  单位元，支持到两位小数               |
 | pay_method         | 否  |string | 支付方式，如果为空，自动选择可用的支付方式          |
 | client_ip          | 是   |string | 下单用户的IP地址（一定要是用户的真实IP）           |
@@ -34,7 +34,7 @@ title: '创建订单'
 | payer_account_no | 可选  |string | 【依据相关渠道】 付款人银行卡号               |
 | timestamp          | 是   |string | unix秒级时间戳                        |
 | version            | 是   |string | 接口版本: v1.0                       |
-|uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
+| uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
 | sign               | 是   |string | 签名token                          |
 
 
