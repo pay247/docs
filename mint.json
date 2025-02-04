@@ -121,7 +121,8 @@
       "pages": [
         "api-reference/common/bank_ph",
         "api-reference/common/bank_kr",
-        "api-reference/common/bank_th"
+        "api-reference/common/bank_th",
+        "api-reference/common/bank_jp"
       ]
     }
   ],

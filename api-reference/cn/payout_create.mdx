@@ -70,7 +70,7 @@ title: '创建订单'
 ```
 
 
-### 菲律宾比索（PHP）代付请求参数说明
+### 印度（INR）代付请求参数说明
 
 | 参数名          | 必选  |类型| 说明                         |
 |:-------------|:----|:----- |----------------------------|
@@ -79,6 +79,24 @@ title: '创建订单'
 | currency     | 是   |string | 订单币种 PHP                       |
 | amount       | 是   |string | 订单金额，单位元，两位小数              |
 | pay_method   | 是   |string | 支付方式，固定填bank          |
+| account_no   | 是   |string | 收款人账号：如gcash、grabpay,银行账号 |
+| bank_code    | 是   |string | 银行IFSC|
+| notify_url   | 否   |string | 异步通知地址，也可以自行使用定时查询的方式      |
+| timestamp    | 是   |string | unix时间戳                    |
+| version      | 是   |string | 接口版本: v1.0                 |
+| uuid         | 是   |string| 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign         | 是   |string | 最后追加的签名                    |
+
+
+### 菲律宾比索（PHP）代付请求参数说明
+
+| 参数名          | 必选  |类型| 说明                         |
+|:-------------|:----|:----- |----------------------------|
+| mch_id       | 是   |string | 商户号                        |
+| mch_order_no | 是   |string | 商户订单号                      |
+| currency     | 是   |string | 订单币种 PHP                       |
+| amount       | 是   |string | 订单金额，单位元，两位小数              |
+| pay_method   | 是   |string | 支付方式 固定 BANK          |
 | account_no   | 是   |string | 收款人账号：如gcash、grabpay,银行账号 |
 | bank_code    | 是   |string | [银行代码 ](https://docs.pay247.io/api-reference/common/bank_ph)|
 | notify_url   | 否   |string | 异步通知地址，也可以自行使用定时查询的方式      |
