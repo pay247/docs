@@ -71,7 +71,8 @@
       "pages": [
         "api-reference/en/payin_create",
         "api-reference/en/payin_query",
-        "api-reference/en/payin_notify"
+        "api-reference/en/payin_notify",
+        "api-reference/en/payin_update"
       ]
     },
     {
