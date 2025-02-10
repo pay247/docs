@@ -8,7 +8,7 @@ title: 'Create'
 
 ###  Request URL
 
-- `{BaseURL}/gateway/payin/create`
+- `https://gateway.pay247.io/gateway/payin/create`
 
 ### Request Method
 
@@ -21,7 +21,7 @@ title: 'Create'
 | mch_id             | Yes   |string | Merchant ID                              |
 | mch_order_no       | Yes   |string | Merchant Order NO.                         |
 | mch_user_id        | Yes   |string | Merchant User ID（You can use md5 to encrypt it） |
-| currency           | Yes   |string | Support【CNY,JPY,PHP,THD, Please Contact BD】            |
+| currency           | Yes   |string | Support【CNY,JPY,PHP,THB, Please Contact BD】            |
 | amount             | Yes   |string | 99.11                 |
 | pay_method         | No  |string |  If leave it empty， the user will use our cashier to choose pay method          |
 | notify_url         | Yes   |string | If the order changed will notify the server url                           |
@@ -61,7 +61,7 @@ title: 'Create'
 | mch_id     |Yes  |string | Merchant ID.              |
 | order_no     |Yes  |string | System Order No.              |
 | mch_order_no |Yes  |string | Merchant Order No.              |
-| currency     |Yes  |string | CNY、 THD、PHP、VND... See more at backoffice      |
+| currency     |Yes  |string | CNY、 THB、PHP、VND... See more at backoffice      |
 | amount       |Yes  |string | 99.11  |
 | pay_method |Yes  |string | pay method |
 | pay_url      |Yes  |string | payment url, need to redirect here        |

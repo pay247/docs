@@ -46,7 +46,7 @@ function sign(array $params, $signKey){
 }
 $data['sign'] = sign($data, $signKey);
 
-$cURLConnection = curl_init('https://gateway.api.com/gateway/payment/create');
+$cURLConnection = curl_init('https://gateway.pay247.io/gateway/payment/create');
 curl_setopt($cURLConnection, CURLOPT_POSTFIELDS, $data);
 curl_setopt($cURLConnection, CURLOPT_RETURNTRANSFER, true);
 

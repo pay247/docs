@@ -118,12 +118,25 @@
       ]
     },
     {
+      "version": "中文",
       "group": "Reference",
       "pages": [
-        "api-reference/common/bank_ph",
-        "api-reference/common/bank_kr",
-        "api-reference/common/bank_th",
-        "api-reference/common/bank_jp"
+        "api-reference/cn/banks/bank_ph",
+        "api-reference/cn/banks/bank_kr",
+        "api-reference/cn/banks/bank_th",
+        "api-reference/cn/banks/bank_jp",
+        "api-reference/cn/banks/bank_vn"
+      ]
+    },
+    {
+      "version": "English",
+      "group": "Reference",
+      "pages": [
+        "api-reference/en/banks/bank_ph",
+        "api-reference/en/banks/bank_kr",
+        "api-reference/en/banks/bank_th",
+        "api-reference/en/banks/bank_jp",
+        "api-reference/en/banks/bank_vn"
       ]
     }
   ],

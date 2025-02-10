@@ -9,7 +9,7 @@ title: '创建订单'
 
 ###  请求URL
 
-- `{BaseURL}/gateway/payin/create`
+- `https://gateway.pay247.io/gateway/payin/create`
 
 ### 请求方式
 
@@ -22,7 +22,7 @@ title: '创建订单'
 | mch_id             | 是   |string | 商户号                              |
 | mch_order_no       | 是   |string | 商户自生成订单号                         |
 | mch_user_id        | 是   |string | 商户用户的唯一标识（如果想隐藏用户id明文，可以使用md5加密传递） |
-| currency           | 是   |string | 支持【CNY,JPY,PHP,THD等 ，更多参考商户后台】            |
+| currency           | 是   |string | 支持【CNY,JPY,PHP,THB等 ，更多参考商户后台】            |
 | amount             | 是   |string | 99.11  单位元，支持到两位小数               |
 | pay_method         | 否  |string | 支付方式，如果为空，自动选择可用的支付方式          |
 | client_ip          | 是   |string | 下单用户的IP地址（一定要是用户的真实IP）           |
@@ -61,7 +61,7 @@ title: '创建订单'
 |:-------------|:---|:----- |--------------------|
 | order_no     |是  |string | 系统订单号              |
 | mch_order_no |是  |string | 商户订单号              |
-| currency     |是  |string | CNY, THD, PHP      |
+| currency     |是  |string | CNY, THB, PHP      |
 | amount       |是  |string | 99.00  单位元，支持到两位小数 |
 | channel_code |是  |string | 通道code，见文档上方通道描述部分 |
 | pay_url      |是  |string | 支付链接，获取后跳转         |

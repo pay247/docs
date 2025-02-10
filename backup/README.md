@@ -3,6 +3,5 @@
 
 找到以下信息
 
-* 接口域名 如：https://api.com
 * 商户ID  如：SVSPYS63XM10042
 * 商户密钥 如：b05a16b1e92aa4948e164b747b5749b4
