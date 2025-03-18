@@ -24,6 +24,7 @@ title: 'Create'
 | currency           | Yes   |string | Support【CNY,JPY,PHP,THB, Please Contact BD】            |
 | amount             | Yes   |string | 99.11                 |
 | pay_method         | No  |string |  If leave it empty， the user will use our cashier to choose pay method          |
+| pay_theme          | No  |string |  'link': pay247 cashier, 'custom': return pay params for custom cashier, If leave it empty， the user will use our cashier,       |
 | notify_url         | Yes   |string | If the order changed will notify the server url                           |
 | return_url         | No   |string | If paid success, will return to this url                           |
 | payer_id           | No  |string | [Some pay method needs] the payer ID.               |
@@ -46,6 +47,7 @@ title: 'Create'
   "currency": "CNY",
   "amount": "99.11",
   "pay_mehod": "GCASH",
+  "pay_theme": "link",
   "notify_url": "https://x.com/notify",
   "return_url": "https://x.com/return",
   "timestamp": "1693233334134",
@@ -63,11 +65,13 @@ title: 'Create'
 | mch_order_no |Yes  |string | Merchant Order No.              |
 | currency     |Yes  |string | CNY、 THB、PHP、VND... See more at backoffice      |
 | amount       |Yes  |string | 99.11  |
-| pay_method |Yes  |string | pay method |
-| pay_url      |Yes  |string | payment url, need to redirect here        |
+| pay_method   |Yes  |string | pay method |
+| pay_theme    |Yes  |string | pay theme, link: pay247 cashier, custom: for merhcant to custom cashier  |
+| pay_url      |Optional  |string | payment url for theme of link,  need to redirect here        |
+| pay_params   |Optional  |object | payment params for theme of custom, need to custom cashier page    |
 | status    |No  |string | The order status                |
 
-### For example
+### For example (Cashier)
 
 ```
 {
@@ -82,8 +86,38 @@ title: 'Create'
     "currency": "USD",
 		"amount": "59.12",
 		"pay_method": "BANK",
+    "pay_theme": "link",
 		"status": "PENDING",
     "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
+  }
+}
+```
+
+
+### For example (Custom) Support JPY now
+
+```
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": "1693233334134",
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "23082822325936693122",
+    "order_no": "MO202308282232593669984082",
+    "currency": "USD",
+    "amount": "59.12",
+    "pay_method": "BANK",
+    "pay_theme": "custom",
+    "status": "PENDING",
+		"pay_params": {
+			"payee_name": "日本測試卡",
+			"payee_account_no": "123",
+			"payee_bank_name": "三菱UFJ銀行",
+			"payee_branch_name": "日本測試卡",
+			"qr": ""
+		}
   }
 }
 ```
