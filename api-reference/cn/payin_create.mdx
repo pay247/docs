@@ -25,10 +25,10 @@ title: '创建订单'
 | currency           | 是   |string | 支持【CNY,JPY,PHP,THB等 ，更多参考商户后台】            |
 | amount             | 是   |string | 99.11  单位元，支持到两位小数               |
 | pay_method         | 否  |string | 支付方式，如果为空，自动选择可用的支付方式          |
+| pay_theme          | 可选  |string | 1. link: 收银台模式（默认），2. custom: 自定义模式，会返回银行卡或者收款码信息，商户需自己封装 |
 | client_ip          | 是   |string | 下单用户的IP地址（一定要是用户的真实IP）           |
 | notify_url         | 是   |string | 异步通知地址                           |
 | return_url         | 否   |string | 同步跳转地址                           |
-| theme              | 可选  |string | 1. link: 收银台模式（默认），2. custom: 自定义模式，会返回银行卡或者收款码信息，商户需自己封装 |
 | payer_id           | 可选  |string | 【依据相关渠道】付款人身份证号                |
 | payer_name         | 可选  |string | 【依据相关渠道】付款人姓名                 |
 | payer_phone        | 可选  |string | 【依据相关渠道】付款人手机号                 |
@@ -49,7 +49,7 @@ title: '创建订单'
   "currency": "CNY",
   "amount": "99.11",
   "pay_mehod": "GCASH",
-  "theme": "link",
+  "pay_theme": "link",
   "notify_url": "https://x.com/notify",
   "return_url": "https://x.com/return",
   "timestamp": "1693233334134",
