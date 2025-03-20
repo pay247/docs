@@ -25,6 +25,7 @@ title: 'Create'
 | amount             | Yes   |string | 99.11                 |
 | pay_method         | No  |string |  If leave it empty， the user will use our cashier to choose pay method          |
 | pay_theme          | No  |string |  'link': pay247 cashier, 'custom': return pay params for custom cashier, If leave it empty， the user will use our cashier,       |
+| client_ip          | Yes   |string | The IP address of the ordering user (must be the user's real IP). |
 | notify_url         | Yes   |string | If the order changed will notify the server url                           |
 | return_url         | No   |string | If paid success, will return to this url                           |
 | payer_id           | No  |string | [Some pay method needs] the payer ID.               |
