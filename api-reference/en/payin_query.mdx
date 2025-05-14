@@ -26,9 +26,13 @@ title: 'Query'
 | Parameter | Must    | Type  |  Explanation  |
 |:----    |:---|:----- |------------------------------------|
 |mch_order_no |Yes  |string | Merchant Order NO.                              |
-|status |Yes  |string | PENDING； DEALING；CLOSED SUCCESS；FAIL；REFUND；|
+|status |Yes  |string | PENDING; DEALING; TIMEOUT; CLOSED; SUCCESS; FAIL; REFUND|
 |currency |Yes  |string | Currency                               |
 |amount |Yes  |string | Amount                               |
+
+### The payin status flowchart
+
+![flowchart](./images/payin.jpg)
 
 ### For example
 
