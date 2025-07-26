@@ -101,7 +101,25 @@ title: 'Create'
 | amount       | Yes   |string | Amount             |
 | pay_method   | Yes   |string | Payment Method: BANK          |
 | account_no   | Yes   |string | Account No. |
-| bank_code    | Yes   |string | [ Bank Codes ](https://docs.pay247.io/api-reference/common/bank_ph)|
+| bank_code    | Yes   |string | [ Bank Codes ](/api-reference/en/banks/bank_ph)|
+| notify_url   | 否    |string | Notify URL  |
+| timestamp    | Yes   |string | Timestamp millisecond            |
+| version      | Yes   |string | Version: v1.0                 |
+| uuid         | Yes   |string| Request ID: 550e8400-e29b-41d4-a716-446655440000 |
+| sign         | Yes   |string | Signatrue                    |
+
+
+### Mexico（MXN）Payout Request Parameters
+
+| Parameter | Must    | Type  |  Explanation  |
+|:-------------|:----|:----- |----------------------------|
+| mch_id       | Yes   |string | Merchant ID.                        |
+| mch_order_no | Yes   |string | Merchant Order No.                      |
+| currency     | Yes   |string | Currency:  MXN                     |
+| amount       | Yes   |string | Amount             |
+| pay_method   | Yes   |string | Payment Method: BANK          |
+| account_no   | Yes   |string | Account No. |
+| bank_code    | Yes   |string | [ Bank Codes ](/api-reference/en/banks/bank_mx)|
 | notify_url   | 否    |string | Notify URL  |
 | timestamp    | Yes   |string | Timestamp millisecond            |
 | version      | Yes   |string | Version: v1.0                 |
