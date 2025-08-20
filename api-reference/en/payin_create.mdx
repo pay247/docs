@@ -31,11 +31,21 @@ title: 'Create'
 | payer_id           | No  |string | [Some pay method needs] the payer ID.               |
 | payer_name         | No  |string | [Some pay method needs] the payer name              |
 | payer_phone        | No  |string | [Some pay method needs] the payer phone                 |
-| payer_account_no | No  |string | [Some pay method needs] the payer account_no          |
+| payer_account_no   | No  |string | [Some pay method needs] the payer account_no          |
+| payer_address      | No  |string | [Some pay method needs] the payer address          |
 | timestamp          | Yes   |string | timestamp millisecond                     |
 | version            | Yes   |string | v1.0                       |
 | uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
 | sign               | Yes   |string | Signature                          |
+
+
+
+### Optional Parameters
+
+| Currency           |  Pay method    | Required                         |
+|:-------------------|:-------------  |----------------------------------|
+| 🇹🇭 THB             | BANK           | payer_name, payer_account_no |
+| 🇯🇵 JPY             | BANK           | payer_name, payer_address |
 
 
 ### For example
