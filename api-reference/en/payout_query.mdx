@@ -32,6 +32,7 @@ title: 'Query'
 |status |Yes  |status | PENDING, DEALING, CLOSED, SUCCESS, FAIL |
 |receipt |No  |string |Receipt if success, maybe have|
 |paid_at | No  |int | Paid time，timestamp millisecond  |
+|utr    | No   |string | If the order success, will have utr info |
 |error |No |string | If the order status is FAIL, will have error info |
 
 ### For example
@@ -50,6 +51,7 @@ title: 'Query'
     "pay_method": "BANK",
     "status": "SUCCESS",
     "receipt": "",
+    "utr": "",
     "error": "",
     "paid_at": 1594223433123
   }

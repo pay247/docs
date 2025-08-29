@@ -24,6 +24,7 @@ Notify URL：`notify_url`
 | status             | Yes  |string | PENDING, DEALING, SUCCESS, FAIL |
 | paid_at            | No   |int | Paid time，timestamp millisecond  |
 | error              | Yes   |string | If the order fail, will have error info |
+| utr                | No   |string | If the order success, will have utr info |
 | sign               | Yes   |string | Signature |
 
 
@@ -43,6 +44,7 @@ Notify URL：`notify_url`
     "status": "SUCCESS",
     "paid_at": 1597124856123,
     "error": "",
+    "utr": "Fx1011122",
     "receipt": "https://abc.com/abc.jpg",
     "sign": "1235e535956e6c288b6fdcae4522a13a"
 }
