@@ -105,7 +105,7 @@ title: 'Create'
 ```
 
 
-### For example (Custom) Support JPY now
+### For example (Custom) Support JPY
 
 ```
 {
@@ -128,6 +128,38 @@ title: 'Create'
 			"payee_bank_name": "三菱UFJ銀行",
 			"payee_branch_name": "日本測試卡",
 			"qr": ""
+		}
+	}
+}
+```
+
+
+### For example (Custom) Support INR
+
+```
+{
+	"code": 0,
+	"message": "success",
+	"uuid": "219bf2a2-8994-4ab0-b850-a5c1c70316e5",
+	"timestamp": 1756736237009,
+	"data": {
+		"mch_order_no": "1119132492",
+		"order_no": "PI202509012031309225639045",
+		"currency": "INR",
+		"amount": "23000.00",
+		"pay_method": "UPI",
+		"fee": "1495.00",
+		"pay_theme": "custom",
+		"utr": "395141536523",
+		"error": null,
+		"status": "PENDING",
+		"pay_params": {
+			"payee_name": "AJ ENTERPRISE",
+			"payee_account_no": "ajenter66@sbi",
+			"payee_bank_name": "",
+			"payee_branch_name": "",
+			"qr": "upi://pay?pa=ajenter66@sbi&pn=AJ ENTERPRISE&tn=O04T&am=22999.48&cu=INR&featuretype=money_transfer",
+			"payee_phone": ""
 		}
 	}
 }
