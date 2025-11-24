@@ -39,6 +39,16 @@ title: '创建订单'
 | sign               | 是   |string | 签名token                          |
 
 
+
+### 可选参数说明
+
+| 币种           |  支付方式    | 必填                         |
+|:-------------------|:-------------  |----------------------------------|
+| 🇹🇭 THB             | BANK           | payer_name, payer_account_no |
+| 🇯🇵 JPY             | BANK           | payer_name, payer_address |
+| 🇯🇵 JPY             | BANK_UN        | payer_name(Katakana), payer_account_no, payer_bank_code, payer_branch_code |
+
+
 ### 请求参数示例
 
 ```
