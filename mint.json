@@ -127,7 +127,8 @@
         "api-reference/cn/banks/bank_jp",
         "api-reference/cn/banks/bank_vn",
         "api-reference/cn/banks/bank_mx",
-        "api-reference/cn/banks/bank_bd"
+        "api-reference/cn/banks/bank_bd",
+        "api-reference/cn/banks/bank_my"
       ]
     },
     {
@@ -140,7 +141,8 @@
         "api-reference/en/banks/bank_jp",
         "api-reference/en/banks/bank_vn",
         "api-reference/en/banks/bank_mx",
-        "api-reference/en/banks/bank_bd"
+        "api-reference/en/banks/bank_bd",
+        "api-reference/en/banks/bank_my"
       ]
     }
   ],
