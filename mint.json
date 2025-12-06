@@ -105,7 +105,8 @@
       "pages": [
         "api-reference/cn/payin_create",
         "api-reference/cn/payin_query",
-        "api-reference/cn/payin_notify"
+        "api-reference/cn/payin_notify",
+        "api-reference/en/payin_update"
       ]
     },
     {
