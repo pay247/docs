@@ -17,7 +17,7 @@ title: 'Notify'
 | currency      |Yes  | string | CNY、 THB、PHP、VND... See more at backoffice      |
 | pay_method    |Yes  | string | Payment Methods                      |
 | amount        |Yes  | string | Amount                      |
-| status        |Yes  | string | DEALING；CLOSED；SUCCESS；FAIL；REFUND；|
+| status        |Yes  | string | DEALING, CLOSED, SUCCESS, FAIL, REFUND, UNDERPAID, OVERPAID |
 | paid_at       |Yes  | int    | Timestamp millisecond                    |
 | error         |Yes  | string | Error Info                                    |
 | utr           |No   | string | Unique Transaction Reference number, return it when success                                        |
@@ -33,6 +33,7 @@ title: 'Notify'
 	"order_no": "P20200707042747519753974832",
 	"currency": "USD",
 	"amount": "11.11",
+	"actual_amount": "11.22",
 	"pay_method": "BANK",
 	"pay_theme": "link",
 	"fee": "0.11",

@@ -15,7 +15,7 @@ title: '订单通知'
 | mch_id        |是  | string | 商户号                                        |
 | mch_order_no  |是  | string | 商户订单号                                        |
 | order_no      |是  | string | 系统订单号                                        |
-| status        |是  | string | 支付状态    PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； REFUND 退款；|
+| status        |是  | string | 支付状态    PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； REFUND 退款； |
 | currency      |是  | string | 订单币种 string 类型                         |
 | utr           |是  | string | 支付机构订单号，支付成功时返回                       |
 | amount        |是  | string | 订单金额                      |
@@ -33,6 +33,7 @@ title: '订单通知'
 	"order_no": "P20200707042747519753974832",
 	"currency": "USD",
 	"amount": "11.11",
+	"actual_amount": "11.22",
 	"pay_method": "BANK",
 	"pay_theme": "link",
 	"fee": "0.11",

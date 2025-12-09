@@ -17,7 +17,7 @@ title: '查询订单'
 |mch_id |是  |string |商户号   |
 |mch_order_no |是  |string | 商户订单号   |
 |timestamp |是  |string | unix时间戳  |
-|version |是  |string | 接口版本: v1.0 |
+|version |是  |string | 接口版本: v2.0 |
 |uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
 |sign |是  |string | 最后追加的签名 |
 
@@ -34,7 +34,7 @@ title: '查询订单'
 |amount |是  |string | 订单金额                               |
 |fee |是  |string | 手续费                               |
 |pay_url |是  |string | 支付链接                               |
-|status |是  |string | 支付状态  PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； REFUND 退款；|
+|status |是  |string | 支付状态  PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； REFUND 退款；UNDERPAID 少付，OVERPAID：多付|
 
 ### 返回示例
 
@@ -50,6 +50,7 @@ title: '查询订单'
 		"order_no": "P20200707042747519753974832",
 		"currency": "USD",
 		"amount": "99.11",
+		"actual_amount": "99.00",
 		"pay_method": "BANK",
 		"pay_theme": "link",
 		"fee": "1.99",
