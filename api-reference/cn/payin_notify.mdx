@@ -20,6 +20,7 @@ title: '订单通知'
 | utr           |是  | string | 支付机构订单号，支付成功时返回                       |
 | amount        |是  | string | 订单金额                      |
 | paid_at       |是  | int    | unix时间戳 毫秒                           |
+| created_at    |是  | int    | unix时间戳 毫秒                           |
 | error         |是  | string | 错误或失败信息                                    |
 | sign          |是  | string | 签名                                         |
 
@@ -38,7 +39,8 @@ title: '订单通知'
 	"pay_theme": "link",
 	"fee": "0.11",
 	"paid_at": 1594187989123,
-	"error": "Fail",
+	"created_at": 1594187989123,
+	"error": "",
 	"status": "SUCCESS",
 	"sign": "1235e535956e6c288b6fdcae4522a13a"
 }

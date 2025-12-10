@@ -21,6 +21,7 @@ title: 'Notify'
 | actual_amount |Yes  | string | Paid Amount                      |
 | status        |Yes  | string | DEALING, CLOSED, SUCCESS, FAIL, REFUND, UNDERPAID, OVERPAID |
 | paid_at       |Yes  | int    | Timestamp millisecond                    |
+| created_at    |Yes  | int    | Timestamp millisecond                    |
 | error         |Yes  | string | Error Info                                    |
 | utr           |No   | string | Unique Transaction Reference number, return it when success                                        |
 | sign          |Yes  | string | Signature                                         |
@@ -40,7 +41,8 @@ title: 'Notify'
 	"pay_theme": "link",
 	"fee": "0.11",
 	"paid_at": 1594187989123,
-	"error": "Fail",
+	"created_at": 1594187989123,
+	"error": "",
 	"status": "SUCCESS",
 	"sign": "1235e535956e6c288b6fdcae4522a13a"
 }
