@@ -33,8 +33,8 @@ title: 'Create'
 | payer_phone        | No  |string | [Some pay method needs] the payer phone                 |
 | payer_account_no   | No  |string | [Some pay method needs] the payer account_no          |
 | payer_address      | No  |string | [Some pay method needs] the payer address          |
-| payer_bank_code    | No  |string | [Some pay method needs] the payer address          |
-| payer_branch_code  | No  |string | [Some pay method needs] the payer address          |
+| payer_bank_code    | No  |string | [Some pay method needs] the payer bank code    [Bank List](/api-reference/en/banks/bank_ph)     |
+| payer_branch_code  | No  |string | [Some pay method needs] the payer branch code          |
 | timestamp          | Yes   |string | timestamp millisecond                     |
 | version            | Yes   |string | v2.0                       |
 | uuid               | Yes   |string | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
@@ -46,7 +46,7 @@ title: 'Create'
 
 | Currency           |  Pay method    | Required                         |
 |:-------------------|:-------------  |----------------------------------|
-| 🇹🇭 THB             | BANK           | payer_name, payer_account_no |
+| 🇹🇭 THB             | BANK           | payer_name, payer_account_no, payer_bank_code |
 | 🇯🇵 JPY             | BANK           | payer_name, payer_address |
 
 [//]: # (| 🇯🇵 JPY             | BANK_UN        | payer_name&#40;Katakana&#41;, payer_account_no, payer_bank_code, payer_branch_code |)

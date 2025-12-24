@@ -33,6 +33,8 @@ title: '创建订单'
 | payer_name         | 可选  |string | 【依据相关渠道】付款人姓名                 |
 | payer_phone        | 可选  |string | 【依据相关渠道】付款人手机号                 |
 | payer_account_no | 可选  |string | 【依据相关渠道】 付款人银行卡号               |
+| payer_bank_code | 可选  |string | 【依据相关渠道】 付款人银行代码   [银行列表](/api-reference/cn/banks/bank_ph)             |
+| payer_bank_branch | 可选  |string | 【依据相关渠道】 付款人银行支行               |
 | timestamp          | 是   |string | unix秒级时间戳                        |
 | version            | 是   |string | 接口版本: v2.0                       |
 | uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
@@ -44,7 +46,7 @@ title: '创建订单'
 
 | 币种           |  支付方式    | 必填                         |
 |:-------------------|:-------------  |----------------------------------|
-| 🇹🇭 THB             | BANK           | payer_name, payer_account_no |
+| 🇹🇭 THB             | BANK           | payer_name, payer_account_no, payer_bank_code |
 | 🇯🇵 JPY             | BANK           | payer_name, payer_address |
 
 
