@@ -104,3 +104,50 @@ title: '创建订单'
 | version      | 是   |string | 接口版本: v1.0                 |
 | uuid         | 是   |string| 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
 | sign         | 是   |string | 最后追加的签名                    |
+
+
+
+
+### 示例-USDT 付款
+
+* 请求
+```
+{
+  "mch_id": "Q0P5T8DOGN10000",
+  "mch_order_no": "TRADE-405189",
+  "mch_user_id": "U405189",
+  "currency": "USDT",
+  "amount": "99.11",
+  "pay_mehod": "TRC20",
+  "account_no": "TFSPUcgpB4trALA6fqdK8AZ3KxoQjqjuB1",
+  "notify_url": "https://x.com/notify",
+  "return_url": "https://x.com/return",
+  "timestamp": "1693233334134",
+  "version": "v2.0",
+  "client_ip": "8.8.8.8",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+}
+```
+* 响应
+
+```
+{
+    "code": 0,
+    "message": "Success",
+		"timestamp": 1594099906123,
+		"uuid": "7eb3c9e-5a1d-4a19-be2a-c80eac39830a",
+    "data": {
+        "mch_id": "X3DSKDKII2343",
+        "mch_order_no": "R898543254325432",
+        "order_no": "202007070427475133333",
+        "currency": "USDT",
+        "pay_method": "TRC20",
+        "amount": "99.11",
+    		"status": "PENDING",
+        "fee": "3.60",
+        "paid_at": 1594223431233,
+        "error": ""
+    }
+}
+```

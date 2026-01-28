@@ -5,7 +5,7 @@ title: '创建订单'
 ### 支付流程图
 
 
-![支付流程](./images/payin.jpg)
+![支付流程](./images/payin.png)
 
 ###  请求URL
 
@@ -24,7 +24,7 @@ title: '创建订单'
 | mch_user_id        | 是   |string | 商户用户的唯一标识（如果想隐藏用户id明文，可以使用md5加密传递） |
 | currency           | 是   |string | 支持【CNY,JPY,PHP,THB等 ，更多参考商户后台】            |
 | amount             | 是   |string | 99.11  单位元，支持到两位小数               |
-| pay_method         | 否  |string | 支付方式，如果为空，自动选择可用的支付方式          |
+| pay_method         | 否  |string | [支付方式](/api-reference/en/common/#dict) ，如果为空，自动选择可用的支付方式          |
 | pay_theme          | 可选  |string | 1. link: 收银台模式（默认），2. custom: 自定义模式，会返回银行卡或者收款码信息，商户需自己封装 |
 | client_ip          | 是   |string | 下单用户的IP地址（一定要是用户的真实IP）           |
 | notify_url         | 是   |string | 异步通知地址                           |
@@ -129,6 +129,48 @@ title: '创建订单'
 			"payee_branch_name": "日本測試卡",
 			"qr": ""
 		}
+	}
+}
+```
+
+
+### 示例-USDT 收款
+
+* Request
+```
+{
+  "mch_id": "Q0P5T8DOGN10000",
+  "mch_order_no": "TRADE-405189",
+  "mch_user_id": "U405189",
+  "currency": "USDT",
+  "amount": "99.11",
+  "pay_mehod": "TRC20",
+  "notify_url": "https://x.com/notify",
+  "return_url": "https://x.com/return",
+  "timestamp": "1693233334134",
+  "version": "v2.0",
+  "client_ip": "8.8.8.8",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+}
+```
+* Response
+
+```
+{
+	"code": 0,
+	"message": "success",
+	"uuid": "550e8400-e29b-41d4-a716-446655440000",
+	"timestamp": "1693233334134",
+	"data": {
+		"mch_id": "MCH12345678",
+		"mch_order_no": "23082822325936693122",
+		"order_no": "MO202308282232593669984082",
+		"currency": "USDT",
+		"amount": "59.12",
+		"pay_method": "ERC20",
+		"status": "PENDING",
+		"pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
 	}
 }
 ```

@@ -46,9 +46,9 @@ The timezone used by the API is ```UTC+8```
 | data    | YES   | mixed   | data          |   |
 
 
-### Dict
+### System Code
 
-* code
+* Code
 
 | code  | Explanation   |
 |:-----|:-----|
@@ -60,9 +60,27 @@ The timezone used by the API is ```UTC+8```
 | 5000 | System error， if your order is payout, should call the payout query api to check the order|
 | 5001 | Insufficient wallet balance for payout|
 
+### Pay Theme
+
 * pay_theme
 
 | value  | Explanation   |
 |:-----|:-----|
 | link    | System default cashier   |
 | custom  | Merchant custom cashier，will return bank cards to merchant. |
+
+
+### Pay Method
+
+* pay_method (You can go merchant console to see more)
+
+| currency  | type  | pay method  | explain   |
+|:-----|:-----|:-----|:-----|
+| USDT    | payin   | TRC20 |   |
+| USDT    | payout   | TRC20 |   |
+| INR    | payin   | UPI | UPI |
+| INR    | payin   | UPI_INTENT | UPI INTENT |
+| INR    | payout   | BANK | IFSC Bank Transfer |
+| PHP    | payin   | GCASH | GCash |
+| PHP    | payin   | MAYA | Maya |
+| PHP    | payout   | BANK | Bank Transfer |

@@ -25,15 +25,19 @@ title: 'Create'
 | currency | Yes   |string | Currency [PHP, JPY, INR, USD...]                       |
 | amount       | Yes   |string | Amount             |
 | pay_method   | Yes  |string | Payment method          |
-| account_name | Yes   |string | Accouont Name                     |
-| account_no   | Yes   |string | Account No. |
+| account_name | Optional   |string | Account Name with Fiat Currency, No need for Crypto Currency                    |
+| account_no   | Yes   |string | Account No. for Fiat.  Address for Crypto Currency |
 | notify_url   | No   |string | Notify URL    |
-| bank_code    | No   |string | 【OPTIONAL】Bank Code  for pay_method = bank          |
+| bank_code    | No   |string | 【OPTIONAL】Bank Code  for pay_method = BANK          |
 | bank_branch  | No   |string | 【OPTIONAL】Bank Branch           |
 | timestamp    | Yes   |string | timestamp millisecond                     |
 | version      | Yes   |string | v1.0                       |
 | uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
 | sign         | Yes   |string | Signatrue                    |
+
+
+
+
 
 ### Response data
 

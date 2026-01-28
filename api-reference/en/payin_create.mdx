@@ -4,7 +4,7 @@ title: 'Create'
 
 ### The payin flowchart
 
-![flowchart](./images/payin.jpg)
+![flowchart](./images/payin.png)
 
 ###  Request URL
 
@@ -23,7 +23,7 @@ title: 'Create'
 | mch_user_id        | Yes   |string | Merchant User ID（You can use md5 to encrypt it） |
 | currency           | Yes   |string | Support【CNY,JPY,PHP,THB, Please Contact BD】            |
 | amount             | Yes   |string | 99.11                 |
-| pay_method         | No  |string |  If leave it empty， the user will use our cashier to choose pay method          |
+| pay_method         | No  |string |  [Pay Methods](/api-reference/en/common/#dict) If leave it empty， the user will use our cashier to choose pay method          |
 | pay_theme          | No  |string |  'link': pay247 cashier, 'custom': return pay params for custom cashier, If leave it empty， the user will use our cashier,       |
 | client_ip          | Yes   |string | The IP address of the ordering user (must be the user's real IP). |
 | notify_url         | Yes   |string | If the order changed will notify the server url                           |
@@ -109,6 +109,46 @@ title: 'Create'
 }
 ```
 
+### For example USDT
+
+* Request
+```
+{
+  "mch_id": "Q0P5T8DOGN10000",
+  "mch_order_no": "TRADE-405189",
+  "mch_user_id": "U405189",
+  "currency": "USDT",
+  "amount": "99.11",
+  "pay_mehod": "TRC20",
+  "notify_url": "https://x.com/notify",
+  "return_url": "https://x.com/return",
+  "timestamp": "1693233334134",
+  "version": "v2.0",
+  "client_ip": "8.8.8.8",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+}
+```
+* Response
+
+```
+{
+	"code": 0,
+	"message": "success",
+	"uuid": "550e8400-e29b-41d4-a716-446655440000",
+	"timestamp": "1693233334134",
+	"data": {
+		"mch_id": "MCH12345678",
+		"mch_order_no": "23082822325936693122",
+		"order_no": "MO202308282232593669984082",
+		"currency": "USDT",
+		"amount": "59.12",
+		"pay_method": "ERC20",
+		"status": "PENDING",
+		"pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
+	}
+}
+```
 
 ### For example (Custom) Support JPY
 
