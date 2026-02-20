@@ -10,6 +10,11 @@ title: 'Create'
 	2. If a network timeout occurs, you may retry after 2 minutes.
 </Note>
 
+
+### The payout flowchart
+
+![flowchart](./images/payout.png)
+
 ### Request URL
 - `https://gateway.pay247.io/gateway/payout/create`
 
@@ -49,7 +54,7 @@ title: 'Create'
 | currency    |Yes  |string | CNY、 THB、PHP、VND... See more at backoffice      |
 | amount      |Yes  |string |Amount |
 | fee         |Yes  |string |Fee |
-| status      |Yes  |status | PENDING, DEALING, CLOSED, SUCCESS, FAIL |
+| status      |Yes  |status | PENDING, DEALING, SUCCESS, FAIL |
 | paid_at     |No  |string |if the order SUCCESS, will have paid time|
 | error       |No  |string |if the order FAIL, maybe have error info |
 
