@@ -20,7 +20,7 @@ title: 'Create'
 |:-------------------|:----|:----- |----------------------------------|
 | mch_id             | Yes   |string | Merchant ID                              |
 | mch_order_no       | Yes   |string | Merchant Order NO.                         |
-| mch_user_id        | Yes   |string | Merchant User ID（You can use md5 to encrypt it） |
+| mch_user_id        | Yes   |string | Merchant's User ID（When a user’s order is not paid, it allows for faster query and troubleshooting.） |
 | currency           | Yes   |string | Support【CNY,JPY,PHP,THB, Please Contact BD】            |
 | amount             | Yes   |string | 99.11                 |
 | pay_method         | No  |string |  [Pay Methods](/api-reference/en/common/#dict) If leave it empty， the user will use our cashier to choose pay method          |
