@@ -3,7 +3,7 @@ title: 'Query'
 ---
 
 ### Request URL
-- `https://gateway.pay247.io/gateway/payout/query `
+- `https://gateway.pay247.io/gateway/payout/approve `
 
 ### Request Method
 - POST
@@ -13,12 +13,14 @@ title: 'Query'
 |:------------|:---|:----- |------   |
 | mch_id      |Yes  |string |Merchant ID   |
 | mch_order_no|Yes  |string | Merchant Order NO. |
+| action      |Yes  |string | confirm / reject |
 | timestamp   |Yes  |string | timestamp millisecond  |
 | version     |Yes  |string | v1.0 |
 | uuid        |Yes | string | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
 | sign        |Yes  |string | Signature |
 
-
+After rejected , the order status will be FAIL.
+After confirmed , the order status will be PENDING->DEALING->(SUCCESS OR FAIL).
 ### Response data
 
 | Parameter | Must    | Type  |  Explanation  |
@@ -27,13 +29,9 @@ title: 'Query'
 |mch_order_no |Yes  |string |Merchant Order no |
 |order_no |Yes  |string |System Order no  |
 |currency |Yes  |string |Currency |
-|amount |Yes  |string |Amount |
-|fee |Yes  |string |Fee |
+| amount      |Yes  |string |Amount |
+| fee         |Yes  |string |Fee |
 |status |Yes  |status | CONFIRMING, PENDING, DEALING, SUCCESS, FAIL |
-|receipt |No  |string |Receipt if success, maybe have|
-|paid_at | No  |int | Paid time，timestamp millisecond  |
-|utr    | No   |string | If the order success, will have utr info |
-|error |No |string | If the order status is FAIL, will have error info |
 
 ### For example
 
