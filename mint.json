@@ -81,7 +81,8 @@
       "pages": [
         "api-reference/en/payout_create",
         "api-reference/en/payout_query",
-        "api-reference/en/payout_notify"
+        "api-reference/en/payout_notify",
+        "api-reference/en/payout_approve"
       ]
     },
     {
@@ -115,7 +116,8 @@
       "pages": [
         "api-reference/cn/payout_create",
         "api-reference/cn/payout_query",
-        "api-reference/cn/payout_notify"
+        "api-reference/cn/payout_notify",
+        "api-reference/cn/payout_approve"
       ]
     },
     {
