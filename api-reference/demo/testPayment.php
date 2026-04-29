@@ -28,7 +28,7 @@ $data = [
     'city'   => $city,
     'notify_url' => 'https://notify.api.com/notify/xxx',
     'timestamp'  => time(),
-    'version'    => 'v1.0',
+    'version'    => 'v3.0',
 ];
 
 function sign(array $params, $signKey){
