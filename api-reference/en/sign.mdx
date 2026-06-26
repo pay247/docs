@@ -10,6 +10,7 @@ Assume all received data is represented as a set M. Extract the non-empty values
 Pay close attention to the following rules:
 Parameter names must be sorted in ascending ASCII order (lexicographical order).
 Parameter names are case-sensitive.
+(Recommendation) If a request field is a string, we recommend removing any leading and trailing spaces before sending the request.
 
 2. Append the Merchant Key:
 Append the merchant key to the end of str, and perform an MD5 hash operation on str with the merchant key to obtain the sign value.
