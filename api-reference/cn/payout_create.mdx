@@ -29,7 +29,7 @@ title: '创建订单'
 | pay_method   | 是  |string | 支付方式，如:BANK          |
 | account_name | 否   |string | 收款人开户名                     |
 | account_no   | 是   |string | 收款人账号：如gcash、grabpay, 支付宝、微信账号、银行账号 |
-| bank_code    | 否   |string | 【选填】【银行卡渠道】银行代码            |
+| bank_code    | 否   |string | 【选填】印度INR为IFSC，详细请查看底部[印度代付请求参数说明](/api-reference/cn/payout_create#印度（inr）代付请求参数说明)；其他币种则为【银行卡渠道】银行代码 [银行列表](/api-reference/cn/banks/bank_ph)；如果有疑问可联系我们解决            |
 | bank_branch  | 否   |string | 【选填】【银行卡渠道】支行信息            |
 | notify_url   | 否   |string | 异步通知地址，也可以自行使用定时查询的方式      |
 | timestamp    | 是   |string | unix时间戳                    |
