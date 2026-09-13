@@ -137,7 +137,8 @@
         "api-reference/cn/banks/bank_pk",
         "api-reference/cn/banks/bank_kh",
         "api-reference/cn/banks/bank_sg",
-        "api-reference/cn/banks/bank_lk"
+        "api-reference/cn/banks/bank_lk",
+        "api-reference/cn/banks/bank_tw"
       ]
     },
     {
@@ -157,7 +158,8 @@
         "api-reference/en/banks/bank_pk",
         "api-reference/en/banks/bank_kh",
         "api-reference/en/banks/bank_sg",
-        "api-reference/en/banks/bank_lk"
+        "api-reference/en/banks/bank_lk",
+        "api-reference/en/banks/bank_tw"
       ]
     }
   ],
