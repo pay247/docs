@@ -5,7 +5,7 @@ title: 'Signature'
 ### Signature Description
 ```
 1. Assemble Parameters:
-Assume all received data is represented as a set M. Extract the non-empty values from set M, and sort the parameters by their names in ascending ASCII order (lexicographical order). Concatenate these parameters into a string str in URL key-value pair format as follows:
+Assume all received data is represented as a set M. Extract the non-empty values (empty type, i.e., NULL) from set M, and sort the parameters by their names in ascending ASCII order (lexicographical order). Concatenate these parameters into a string str in URL key-value pair format as follows:
 "key1=value1&key2=value2&key3=value3..."
 Pay close attention to the following rules:
 Parameter names must be sorted in ascending ASCII order (lexicographical order).
