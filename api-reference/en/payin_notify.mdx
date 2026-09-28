@@ -50,5 +50,3 @@ Return a `Content-Type: text/plain` response body:
 |---|---|
 | `SUCCESS` | Acknowledged; retries stop. Case and surrounding whitespace are ignored. |
 | `FAIL` or anything else | Unacknowledged; the gateway retries with increasing delay. The current payin job normally retries after 10, 100, and 1000 seconds, up to four total attempts. Reconcile final status with the query API. |
-
-The original “five retries at 3/9/27/81/243 seconds” no longer matches the gateway job and has been corrected here.

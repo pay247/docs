@@ -47,8 +47,6 @@ title: '支付方式与开通情况'
 | `BKASH` | bKash |
 | `NAGAD` | Nagad |
 | `ROCKET` | Rocket |
-| `TRC20` | TRC20 |
-| `ERC20` | ERC20 |
 | `BCEL` | BCEL |
 | `JAZZCASH` | JAZZCASH |
 | `EASYPAISA` | EASYPAISA |
@@ -56,7 +54,7 @@ title: '支付方式与开通情况'
 | `CRYPTO` | CRYPTO |
 | `COMMON` | Other |
 
-`TRC20` 和 `ERC20` 是现有通道的支付方式代码。新加密货币接入使用 `pay_method=CRYPTO`，并按代收/代付接口要求传 `network`；不要把网络值写成 `pay_method`。`COMMON` 表示其他通道方式，是否可用以接口返回为准。
+加密货币订单使用 `pay_method=CRYPTO`，并按代收/代付接口要求传 `network`。`TRC20` 和 `ERC20` 是网络值，不是支付方式代码。`COMMON` 表示其他通道方式，是否可用以接口返回为准。
 
 ### 查询商户已配置的支付方式
 

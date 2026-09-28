@@ -31,7 +31,7 @@ POST
 | `mch_order_no` | Yes | string | Unique merchant order number |
 | `currency` | Yes | string | Currency |
 | `amount` | Yes | number | Amount, at most two decimal places; channel limits apply |
-| `pay_method` | Yes | string | Method code; see [catalog](/api-reference/en/pay_methods) |
+| `pay_method` | Yes | string | Method code; see [catalog](/api-reference/en/pay_methods). Use `CRYPTO` for crypto orders; `TRC20` and `ERC20` are `network` values |
 | `account_no` | Conditional | string | Required unless pay_method is CRYPTO |
 | `account_name` | Conditional | string | Required for non-crypto INR payout |
 | `bank_code` | Conditional | string | Valid 11-character IFSC required for non-crypto INR; otherwise channel-specific |

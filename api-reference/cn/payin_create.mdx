@@ -25,7 +25,7 @@ POST
 | `currency` | 是 | string | 订单币种；可用组合见支付方式接口 |
 | `amount` | 是 | number | 订单金额；须满足通道限额 |
 | `notify_url` | 是 | URL | 异步通知地址 |
-| `pay_method` | 否 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods)；省略时由通道选择 |
+| `pay_method` | 否 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods)；加密货币使用 `CRYPTO`，`TRC20` 和 `ERC20` 应填入 `network`；省略时由通道选择 |
 | `network` | 条件必填 | string | CRYPTO 时必填：TRC20、ERC20、BEP20、SOLANA、ARBITRUM |
 | `pay_theme` | 否 | string | link（默认）或 custom |
 | `mch_user_id` | 否 | string | 商户用户标识 |

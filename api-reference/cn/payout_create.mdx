@@ -31,7 +31,7 @@ POST
 | `mch_order_no` | 是 | string | 商户唯一订单号 |
 | `currency` | 是 | string | 订单币种 |
 | `amount` | 是 | number | 金额，最多两位小数；须满足通道限额 |
-| `pay_method` | 是 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods) |
+| `pay_method` | 是 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods)；加密货币使用 `CRYPTO`，`TRC20` 和 `ERC20` 应填入 `network` |
 | `account_no` | 条件必填 | string | 非 CRYPTO 时必填 |
 | `account_name` | 条件必填 | string | INR 非加密货币代付必填 |
 | `bank_code` | 条件必填 | string | INR 非加密货币代付须填 11 位 IFSC；其他币种按通道要求 |

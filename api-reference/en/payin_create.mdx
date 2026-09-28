@@ -25,7 +25,7 @@ POST
 | `currency` | Yes | string | Order currency; check method availability |
 | `amount` | Yes | number | Amount; channel limits apply |
 | `notify_url` | Yes | URL | Callback URL |
-| `pay_method` | No | string | Method code; see [catalog](/api-reference/en/pay_methods). Routing chooses if omitted |
+| `pay_method` | No | string | Method code; see [catalog](/api-reference/en/pay_methods). Use `CRYPTO` for crypto orders; `TRC20` and `ERC20` are `network` values. Routing chooses if omitted |
 | `network` | Conditional | string | Required for CRYPTO: TRC20, ERC20, BEP20, SOLANA, ARBITRUM |
 | `pay_theme` | No | string | link (default) or custom |
 | `mch_user_id` | No | string | Merchant user identifier |

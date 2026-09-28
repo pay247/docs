@@ -47,8 +47,6 @@ These are the method codes recognized by the gateway. Availability depends on th
 | `BKASH` | bKash |
 | `NAGAD` | Nagad |
 | `ROCKET` | Rocket |
-| `TRC20` | TRC20 |
-| `ERC20` | ERC20 |
 | `BCEL` | BCEL |
 | `JAZZCASH` | JAZZCASH |
 | `EASYPAISA` | EASYPAISA |
@@ -56,7 +54,7 @@ These are the method codes recognized by the gateway. Availability depends on th
 | `CRYPTO` | CRYPTO |
 | `COMMON` | Other |
 
-`TRC20` and `ERC20` are existing channel method codes. For the `CRYPTO` integration, send `pay_method=CRYPTO` and provide `network` as specified by the create endpoint; a network name is not the `pay_method`. `COMMON` represents other channel methods. Check the API result for availability.
+For crypto orders, send `pay_method=CRYPTO` and provide `network` as specified by the create endpoint. `TRC20` and `ERC20` are network values, not payment method codes. `COMMON` represents other channel methods. Check the API result for availability.
 
 ### Query configured merchant methods
 

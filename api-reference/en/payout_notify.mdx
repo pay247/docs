@@ -50,5 +50,3 @@ Return a `Content-Type: text/plain` response body:
 |---|---|
 | `SUCCESS` or `OK` | Acknowledged; retries stop. Case and surrounding whitespace are ignored. |
 | `FAIL` or anything else | Unacknowledged; the gateway retries with increasing delay, up to eight total attempts in the current job. Reconcile final status with the query API. |
-
-The original “five retries at 3/9/27/81/243 seconds” no longer matches the gateway job and has been corrected here.

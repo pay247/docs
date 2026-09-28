@@ -76,12 +76,12 @@ Every merchant request to the gateway (including create, query, update, approval
 
 See [Payment methods and availability](/api-reference/en/pay_methods) for all codes and the merchant availability endpoint.
 
-The original currency and method examples are retained below. Availability still depends on merchant configuration. New crypto integration uses `CRYPTO` with `network`; `TRC20` remains a method code for some existing channels.
+The original currency and method examples are retained below. Availability still depends on merchant configuration. For crypto, use `pay_method=CRYPTO` and set `network` to `TRC20` or another supported network; `TRC20` and `ERC20` are not payment method codes.
 
 | Currency | Direction | Method | Description |
 |---|---|---|---|
-| USDT | payin | TRC20 | Existing Tron channel |
-| USDT | payout | TRC20 | Existing Tron channel |
+| USDT | payin | CRYPTO | Tron network: `network=TRC20` |
+| USDT | payout | CRYPTO | Tron network: `network=TRC20` |
 | INR | payin | UPI | UPI QR |
 | INR | payin | UPI_INTENT | UPI intent |
 | INR | payout | BANK | IFSC bank transfer |
