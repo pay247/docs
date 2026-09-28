@@ -1,139 +1,224 @@
 ---
-title: 'Create'
+title: 'Create payout'
 ---
 
 <Note>
-	Special Notes:
+**Special Notes — payout requests with an unknown outcome**
 
-	1. When calling the payout API, network timeouts or unknown exceptions (with a response code of 5000) may occur. In such cases, the result of the transaction is unknown, and it is necessary to query the payout order status later to obtain the latest update.
-
-	2. If a network timeout occurs, you may retry after 2 minutes.
+1. When calling the payout API, network timeouts or unknown exceptions (with a response code of `5000`) may occur. In such cases, the result of the transaction is unknown. Query the [payout order status](/api-reference/en/payout_query) later to obtain the latest update.
+2. If a network timeout occurs, you may retry after 2 minutes. First query using the same `mch_order_no`; retry only after confirming that no order was created, and keep the same order number.
 </Note>
-
 
 ### The payout flowchart
 
 ![flowchart](./images/payout.png)
 
 ### Request URL
-- `https://gateway.pay247.io/gateway/payout/create`
+
+`https://gateway.pay247.io/gateway/payout/create`
 
 ### Request Method
-- POST
 
-### Request Parameters
+POST
 
-| Parameter | Must    | Type  |  Explanation  |
-|:-------------|:----|:----- |----------------------------|
-| mch_id       | Yes   |string | Merchant ID                        |
-| mch_order_no | Yes   |string | Merchant Order NO.                      |
-| currency | Yes   |string | Supports CNY, JPY, PHP, THB, SGD, etc. For a complete list of supported currencies, please refer to the merchant backoffice.                       |
-| amount       | Yes   |string | Amount             |
-| pay_method   | Yes  |string | Payment method          |
-| account_name | Optional   |string | Account Name with Fiat Currency, No need for Crypto Currency                    |
-| account_no   | Yes   |string | Account No. for Fiat.  Address for Crypto Currency |
-| notify_url   | No   |string | Notify URL    |
-| bank_code    | No   |string | [OPTIONAL] For India INR, please provide the IFSC code. For details, please refer to the [India Payout Request Parameters Description](/api-reference/en/payout_create#indian（inr）payout-request-parameters). For other currencies, please provide the bank code for the [bank card channel] [Bank List](/api-reference/en/banks/bank_ph). If you have any questions, please feel free to contact us.          |
-| bank_branch  | No   |string | [OPTIONAL]Bank Branch           |
-| timestamp    | Yes   |string | timestamp millisecond                     |
-| version      | Yes   |string | v3.0                       |
-| uuid  | Yes  | string   | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign         | Yes   |string | Signatrue                    |
+`timestamp` must be an integer; examples use milliseconds. Use `v3.0` for `version`. Calculate `sign` as described in [Signature](/api-reference/en/sign). All merchant requests to the gateway must include `uuid` and include it in the signature. The response `uuid` comes from the request header or the server and need not match the request body.
 
+## Request fields
 
+| Field | Required | Type | Description |
+|---|---|---|---|
+| `mch_id` | Yes | string | Merchant ID |
+| `mch_order_no` | Yes | string | Unique merchant order number |
+| `currency` | Yes | string | Currency |
+| `amount` | Yes | number | Amount, at most two decimal places; channel limits apply |
+| `pay_method` | Yes | string | Method code; see [catalog](/api-reference/en/pay_methods) |
+| `account_no` | Conditional | string | Required unless pay_method is CRYPTO |
+| `account_name` | Conditional | string | Required for non-crypto INR payout |
+| `bank_code` | Conditional | string | Valid 11-character IFSC required for non-crypto INR; otherwise channel-specific |
+| `network` | Conditional | string | Required for CRYPTO; USDT: TRC20/ERC20/BEP20, USDC: ERC20/BEP20 |
+| `to_address` | Conditional | string | Required for CRYPTO; TRC20 T-prefixed 34-char address, EVM 0x plus 40 hex chars |
+| `memo` | No | string | Crypto memo, max 128 characters |
+| `bank_branch` | No | string | Bank branch |
+| `notify_url` | No | URL | Callback URL |
+| `mch_user_id` | No | string | Merchant user identifier, useful for order investigation |
+| `channel_code` | No | string | Channel code; use only when arranged with the integration team |
+| `timestamp` | Yes | integer | Timestamp |
+| `version` | Yes | string | Use v3.0 |
+| `uuid` | Yes | string | Request ID; included in signature |
+| `sign` | Yes | string | Signature |
 
-
-
-### Response data
-
-| Parameter | Must    | Type  |  Explanation  |
-|:------------|:---|:----- |-----   |
-| mch_id      |Yes  |string |Merchant ID   |
-| mch_order_no|Yes  |string |Merchant Order NO. |
-| order_no    |Yes  |string |Order NO. |
-| currency    |Yes  |string | CNY、 THB、PHP、VND... See more at backoffice      |
-| amount      |Yes  |string |Amount |
-| fee         |Yes  |string |Fee |
-| status      |Yes  |status | CONFIRMING, PENDING, DEALING, SUCCESS, FAIL |
-| paid_at     |No  |string |if the order SUCCESS, will have paid time|
-| error       |No  |string |if the order FAIL, maybe have error info |
-
-### For example
-
-```
+```json
 {
-    "code": 0,
-    "message": "Success",
-    "timestamp": 1594099906123,
-    "uuid": "7eb3c9e-5a1d-4a19-be2a-c80eac39830a",
-    "data": {
-        "mch_id": "X3DSKDKII2343",
-        "mch_order_no": "R898543254325432",
-        "order_no": "202007070427475133333",
-        "currency": "USD",
-        "amount": "99.11",
-        "pay_method": "BANK",
-        "status": "PENDING",
-        "fee": "3.60",
-        "paid_at": 1594223431233,
-        "error": ""
-    }
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYOUT-1001",
+  "currency": "INR",
+  "amount": "100.00",
+  "pay_method": "BANK",
+  "account_name": "Example Recipient",
+  "account_no": "1234567890",
+  "bank_code": "HDFC0001234",
+  "notify_url": "https://merchant.example/notify/payout"
 }
 ```
 
-### Indian（INR）Payout Request Parameters
+## Successful response data
 
-| Parameter | Must    | Type  |  Explanation  |
-|:-------------|:----|:----- |----------------------------|
-| mch_id       | Yes   |string | Merchant ID.                        |
-| mch_order_no | Yes   |string | Merchant Order No.                      |
-| currency     | Yes   |string | Currency:  PHP                     |
-| amount       | Yes   |string | Amount             |
-| pay_method   | Yes   |string | Payment Method: BANK          |
-| account_name | Yes   |string | Account Name. |
-| account_no   | Yes   |string | Account No. |
-| bank_code    | Yes   |string | IFSC |
-| notify_url   | 否   |string | Notify URL  |
-| timestamp    | Yes   |string | Timestamp millisecond            |
-| version      | Yes   |string | Version: v3.0                 |
-| uuid         | Yes   |string| Request ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign         | Yes   |string | Signatrue                    |
+| Field | Required | Type | Description |
+|---|---|---|---|
+| `mch_id` | Yes | string | Merchant ID that owns the order |
+| `mch_order_no` | Yes | string | Order number supplied by the merchant |
+| `order_no` | Yes | string | Platform order number generated by Pay247 |
+| `currency` | Yes | string | Currency |
+| `amount` | Yes | string | Order amount in the order currency |
+| `fee` | Yes | string | Order fee in the order currency |
+| `status` | Yes | string | Usually PENDING or CONFIRMING; query for later status |
+| `network` | CRYPTO only | string | Crypto network code; returned only for CRYPTO orders |
+| `to_address` | CRYPTO only | string | Destination wallet address; returned only for CRYPTO orders and may be empty before assignment |
+| `from_address` | CRYPTO only | string | Source wallet address; returned only for CRYPTO orders and may be empty |
+| `transaction_hash` | CRYPTO only | string | On-chain transaction hash; returned only for CRYPTO orders and empty before available |
+| `memo` | CRYPTO only | string | Crypto transfer memo; returned only for CRYPTO orders and empty if unused |
 
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "currency": "INR",
+    "amount": "100.00",
+    "fee": "2.00",
+    "status": "PENDING",
+    "order_no": "PO202609280001",
+    "mch_order_no": "PAYOUT-1001"
+  }
+}
+```
 
+### Crypto payout request
 
-### Philippine（PHP）Payout Request Parameters
+```json
+{
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYOUT-1002",
+  "currency": "USDT",
+  "amount": "50.00",
+  "pay_method": "CRYPTO",
+  "network": "TRC20",
+  "to_address": "TFSPUcgpB4trALA6fqdK8AZ3KxoQjqjuB1",
+  "notify_url": "https://merchant.example/notify/payout"
+}
+```
 
-| Parameter | Must    | Type  |  Explanation  |
-|:-------------|:----|:----- |----------------------------|
-| mch_id       | Yes   |string | Merchant ID.                        |
-| mch_order_no | Yes   |string | Merchant Order No.                      |
-| currency     | Yes   |string | Currency:  PHP                     |
-| amount       | Yes   |string | Amount             |
-| pay_method   | Yes   |string | Payment Method: BANK          |
-| account_name | Yes   |string | Account Name. |
-| account_no   | Yes   |string | Account No. |
-| bank_code    | Yes   |string | [ Bank Codes ](/api-reference/en/banks/bank_ph)|
-| notify_url   | 否    |string | Notify URL  |
-| timestamp    | Yes   |string | Timestamp millisecond            |
-| version      | Yes   |string | Version: v3.0                 |
-| uuid         | Yes   |string| Request ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign         | Yes   |string | Signatrue                    |
+### Payout fields by country
 
+The country-specific guidance below is retained from the original documentation. Common fields are listed above; availability and bank fields still depend on merchant and channel configuration.
 
-### Mexico（MXN）Payout Request Parameters
+### Indian (INR) Payout Request Parameters
 
-| Parameter | Must    | Type  |  Explanation  |
-|:-------------|:----|:----- |----------------------------|
-| mch_id       | Yes   |string | Merchant ID.                        |
-| mch_order_no | Yes   |string | Merchant Order No.                      |
-| currency     | Yes   |string | Currency:  MXN                     |
-| amount       | Yes   |string | Amount             |
-| pay_method   | Yes   |string | Payment Method: BANK          |
-| account_name | Yes   |string | Account Name. |
-| account_no   | Yes   |string | Account No. |
-| bank_code    | Yes   |string | [ Bank Codes ](/api-reference/en/banks/bank_mx)|
-| notify_url   | 否    |string | Notify URL  |
-| timestamp    | Yes   |string | Timestamp millisecond            |
-| version      | Yes   |string | Version: v3.0                 |
-| uuid         | Yes   |string| Request ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign         | Yes   |string | Signatrue                    |
+| Field | Required | Description |
+|---|---|---|
+| `mch_id` | Yes | Merchant ID |
+| `mch_order_no` | Yes | Merchant order number |
+| `currency` | Yes | INR |
+| `amount` | Yes | Payout amount |
+| `pay_method` | Yes | BANK is a bank-transfer example; check merchant configuration |
+| `account_name` | Yes | Recipient name |
+| `account_no` | Yes | Recipient account number |
+| `bank_code` | Yes | 11-character IFSC, e.g. HDFC0001234 |
+| `notify_url` | No | Callback URL |
+| `timestamp` | Yes | Integer timestamp |
+| `version` | Yes | Use v3.0 |
+| `uuid` | Yes | Request ID; included in signature |
+| `sign` | Yes | Signature |
+
+### Philippine (PHP) Payout Request Parameters
+
+| Field | Required | Description |
+|---|---|---|
+| `mch_id` | Yes | Merchant ID |
+| `mch_order_no` | Yes | Merchant order number |
+| `currency` | Yes | PHP |
+| `amount` | Yes | Payout amount |
+| `pay_method` | Yes | BANK is a bank-transfer example; check merchant configuration |
+| `account_name` | By channel | Recipient name |
+| `account_no` | Yes | Recipient account number |
+| `bank_code` | By channel | [Bank codes](/api-reference/en/banks/bank_ph) |
+| `notify_url` | No | Callback URL |
+| `timestamp` | Yes | Integer timestamp |
+| `version` | Yes | Use v3.0 |
+| `uuid` | Yes | Request ID; included in signature |
+| `sign` | Yes | Signature |
+
+### Mexico (MXN) Payout Request Parameters
+
+| Field | Required | Description |
+|---|---|---|
+| `mch_id` | Yes | Merchant ID |
+| `mch_order_no` | Yes | Merchant order number |
+| `currency` | Yes | MXN |
+| `amount` | Yes | Payout amount |
+| `pay_method` | Yes | BANK is a bank-transfer example; check merchant configuration |
+| `account_name` | By channel | Recipient name |
+| `account_no` | Yes | Recipient account number |
+| `bank_code` | By channel | [Bank codes](/api-reference/en/banks/bank_mx) |
+| `notify_url` | No | Callback URL |
+| `timestamp` | Yes | Integer timestamp |
+| `version` | Yes | Use v3.0 |
+| `uuid` | Yes | Request ID; included in signature |
+| `sign` | Yes | Signature |
+
+### For example USDT payout response (CRYPTO)
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "currency": "USDT",
+    "amount": "50.00",
+    "fee": "2.00",
+    "status": "PENDING",
+    "order_no": "PO202609280002",
+    "mch_order_no": "PAYOUT-1002",
+    "network": "TRC20",
+    "to_address": "TFSPUcgpB4trALA6fqdK8AZ3KxoQjqjuB1",
+    "from_address": "",
+    "transaction_hash": "",
+    "memo": ""
+  }
+}
+```
+
+### Original payout create example (response fields corrected)
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "7eb3c9e-5a1d-4a19-be2a-c80eac39830a",
+  "timestamp": 1594099906123,
+  "data": {
+    "mch_id": "X3DSKDKII2343",
+    "mch_order_no": "R898543254325432",
+    "order_no": "202007070427475133333",
+    "currency": "USD",
+    "amount": "99.11",
+    "status": "PENDING",
+    "fee": "3.60"
+  }
+}
+```
+Create responses do not contain the original example’s `pay_method`, `paid_at`, or `error`. Use [Query payout](/api-reference/en/payout_query) for later status.

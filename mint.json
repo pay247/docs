@@ -55,6 +55,7 @@
       "group": "Quickstart",
       "pages": [
         "api-reference/en/common",
+        "api-reference/en/pay_methods",
         "api-reference/en/sign"
       ]
     },
@@ -90,6 +91,7 @@
       "group": "快速开始",
       "pages": [
         "api-reference/cn/common",
+        "api-reference/cn/pay_methods",
         "api-reference/cn/sign"
       ]
     },

@@ -2,15 +2,17 @@
 title: 'Signature'
 ---
 
+Every merchant request to the gateway must include `uuid`; include it with the other sent fields when calculating the signature.
+
 ### Signature Description
 ```
 1. Assemble Parameters:
-Assume all received data is represented as a set M. Extract the non-empty values (empty type, i.e., NULL) from set M, and sort the parameters by their names in ascending ASCII order (lexicographical order). Concatenate these parameters into a string str in URL key-value pair format as follows:
+Assume all received data is represented as a set M. Exclude the `sign` field from set M, then sort all remaining fields actually sent by their names in ascending ASCII order (lexicographical order). Concatenate these parameters into a string str in URL key-value pair format as follows:
 "key1=value1&key2=value2&key3=value3..."
 Pay close attention to the following rules:
 Parameter names must be sorted in ascending ASCII order (lexicographical order).
 Parameter names are case-sensitive.
-(Recommendation) If a request field is a string, we recommend removing any leading and trailing spaces before sending the request.
+(Recommendation) If a request field is a string, remove any leading and trailing spaces before sending the request. Do not URL-encode values or silently omit empty values.
 
 2. Append the Merchant Key:
 Append the merchant key to the end of str, and perform an MD5 hash operation on str with the merchant key to obtain the sign value.
@@ -21,6 +23,7 @@ Append the merchant key to the end of str, and perform an MD5 hash operation on 
 ```
 
 function sign($data, $secret){
+	unset($data['sign']);
 	ksort($data);
 	$param = [];
 	foreach ($data as $k => $v) {
@@ -37,12 +40,13 @@ function sign($data, $secret){
 ```
 		public static String sign(Map<String, Object> data, String secret) {
 				SortedMap<String, Object> sortedData = new TreeMap<>(data);
+				sortedData.remove("sign");
 
 				StringBuilder param = new StringBuilder();
 				for (Map.Entry<String, Object> entry : sortedData.entrySet()) {
 						String key = entry.getKey();
 						Object value = entry.getValue();
-						String valueStr = value instanceof Integer ? String.valueOf(value) : value.toString();
+						String valueStr = value == null ? "" : value.toString();
 						if (param.length() > 0) {
 								param.append("&");
 						}
@@ -59,7 +63,7 @@ function sign($data, $secret){
 						byte[] array = md.digest(input.getBytes("UTF-8"));
 						StringBuilder sb = new StringBuilder();
 						for (byte b : array) {
-								sb.append(String.format("%02x", b));
+								sb.append(String.format("%02x", b & 0xff));
 						}
 						return sb.toString();
 				} catch (Exception e) {

@@ -1,57 +1,54 @@
 ---
-title: '订单通知'
+title: '代收订单回调'
 ---
 
 ### 通知URL
 
-* 通知地址：`商户发起请求时的notify_url`
+网关向创建订单时的 `notify_url` 发送 `POST` JSON。商户应验证 `sign`，按 `mch_order_no` 幂等处理，并返回纯文本 `SUCCESS`（忽略大小写和首尾空白）。其他响应会触发重试；查询接口可用于核对最终状态。回调体没有 `pay_theme`。
 
-` 代收订单处理成功或失败或关闭都会发送异步通知，需要判断返回结果里的 status 参数为成功或失败做后续的处理`
+| 参数 | 是否出现 | 类型 | 说明 |
+|---|---|---|---|
+| `mch_id` | 始终 | string | 商户号，标识该订单所属商户 |
+| `mch_order_no` | 始终 | string | 商户提交的订单号 |
+| `order_no` | 始终 | string | Pay247 生成的平台订单号 |
+| `status` | 始终 | string | 订单状态；按实际状态处理，可能包含 SUCCESS、FAIL、CLOSED、UNDERPAID、OVERPAID |
+| `currency` | 始终 | string | 订单币种 |
+| `pay_method` | 始终 | string | 实际支付方式代码 |
+| `amount` | 始终 | string | 订单金额，以订单币种计 |
+| `fee` | 始终 | string | 订单手续费，以订单币种计 |
+| `error` | 始终 | string | 错误信息，可能为空 |
+| `created_at` | 始终 | integer | 创建时间，毫秒时间戳 |
+| `paid_at` | 条件性 | integer | 有支付时间时才返回 |
+| `actual_amount` | 条件性 | string | 商户允许多付/少付或 v3.0 已支付状态时返回 |
+| `utr` | 条件性 | string | 仅非 FAIL 的 INR 订单返回，值可能为空 |
+| `sign` | 始终 | string | 回调签名 |
 
-### 通知回调参数
-
-| 参数名           |必选| 类型     | 说明                                         |
-|:--------------|:---|:-------|--------------------------------------------|
-| mch_id        |是  | string | 商户号                                        |
-| mch_order_no  |是  | string | 商户订单号                                        |
-| order_no      |是  | string | 系统订单号                                        |
-| status        |是  | string | 支付状态    PENDING：等待支付； DEALING：处理中；CLOSED：订单超时关闭； SUCCESS：转账成功；FAIL：失败； REFUND 退款； |
-| currency      |是  | string | 订单币种 string 类型                         |
-| utr           |是  | string | 支付机构订单号，支付成功时返回                       |
-| amount        |是  | string | 订单金额                      |
-| paid_at       |是  | int    | unix时间戳 毫秒                           |
-| created_at    |是  | int    | unix时间戳 毫秒                           |
-| error         |是  | string | 错误或失败信息                                    |
-| sign          |是  | string | 签名                                         |
-
-
-### 商户接收的数据示例
-
-```
+```json
 {
-	"mch_id": "MCH12345678",
-	"mch_order_no": "20200708135806101549897485",
-	"order_no": "P20200707042747519753974832",
-	"currency": "USD",
-	"amount": "11.11",
-	"actual_amount": "11.22",
-	"pay_method": "BANK",
-	"pay_theme": "link",
-	"fee": "0.11",
-	"paid_at": 1594187989123,
-	"created_at": 1594187989123,
-	"error": "",
-	"status": "SUCCESS",
-	"sign": "1235e535956e6c288b6fdcae4522a13a"
+  "mch_id": "MCH12345678",
+  "mch_order_no": "PAYIN-1001",
+  "order_no": "PI202609280001",
+  "status": "SUCCESS",
+  "currency": "INR",
+  "pay_method": "UPI",
+  "amount": "99.11",
+  "fee": "1.00",
+  "error": "",
+  "created_at": 1693233334134,
+  "paid_at": 1693233344134,
+  "actual_amount": "99.11",
+  "utr": "123456789012",
+  "sign": "<computed signature>"
 }
-
 ```
 
-`注：逻辑处理成功响应字符串 SUCCESS，否则返回 FAIL 或其它提示`
+### 通知回调响应结果
 
-**通知回调响应结果**
+商户应返回 `Content-Type: text/plain` 的响应正文：
 
-|返回值|必选|类型|说明|
-|:----    |:---|:----- |-----   |
-|SUCCESS |是  |string | 成功，不再继续通知  |
-|fail/other |是  |string | 非成功，则会继续尝试通知5次，分次间隔为3/9/27/81/243秒 |
+| 返回内容 | 处理结果 |
+|---|---|
+| `SUCCESS` | 确认通知，停止重试；大小写及前后空白不影响判断。 |
+| `FAIL` 或其他内容 | 视为未确认，网关按递增间隔重试。当前代收任务通常在 10、100、1000 秒后重试，最多尝试 4 次；最终状态仍应通过订单查询核对。 |
+
+原文中的“重试 5 次、间隔 3/9/27/81/243 秒”与当前网关任务实现不一致，以上按实际代码修正。

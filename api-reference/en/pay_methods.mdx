@@ -1,0 +1,103 @@
+---
+title: 'Payment methods and availability'
+---
+
+These are the method codes recognized by the gateway. Availability depends on the merchant, currency, and payin/payout direction. Query the endpoint below and check `currency`, `type`, `pay_method`, and `status`. Order creation also depends on merchant rates, channel status, and amount limits.
+
+### Method codes
+
+| Code | Name |
+|---|---|
+| `UPI` | UPI |
+| `UPI_INTENT` | UPI Intent |
+| `UPI_NATIVE` | UPI Native |
+| `IMPS` | IMPS |
+| `BANK` | Bank |
+| `BANK_BCA` | Bank BCA |
+| `BANK_QR` | Bank QR |
+| `NATIVE_QR` | Native QR |
+| `EWALLET` | EWallet |
+| `WECHAT` | WechatPay |
+| `ALIPAY` | Alipay |
+| `PROMPTPAY` | PromptPay |
+| `THAIQR` | ThaiQR |
+| `GCASH` | GCash |
+| `MAYA` | Maya |
+| `GRABPAY` | GrabPay |
+| `SHOPEEPAY` | ShopeePay |
+| `LINEPAY` | LinePay |
+| `GOTYME` | Gotyme |
+| `MOMO` | Momo |
+| `ZALO` | Zalo |
+| `VIETTEL` | Viettel |
+| `VIETQR` | VietQR |
+| `DANA` | Dana |
+| `QRIS` | QRIS |
+| `DOKUVA` | DOKUVA |
+| `TNG` | Touch‘n Go |
+| `MBB` | MayBank |
+| `TRUEMONEY` | TrueMoney |
+| `SPEI` | SPEI |
+| `BOOST` | Boost |
+| `DUITNOW` | DuitNow |
+| `BNI` | BNI |
+| `BRI` | BRI |
+| `MANDIRI` | MANDIRI |
+| `PERMATA` | PERMATA |
+| `BKASH` | bKash |
+| `NAGAD` | Nagad |
+| `ROCKET` | Rocket |
+| `TRC20` | TRC20 |
+| `ERC20` | ERC20 |
+| `BCEL` | BCEL |
+| `JAZZCASH` | JAZZCASH |
+| `EASYPAISA` | EASYPAISA |
+| `PAYNOW` | PAYNOW |
+| `CRYPTO` | CRYPTO |
+| `COMMON` | Other |
+
+`TRC20` and `ERC20` are existing channel method codes. For the `CRYPTO` integration, send `pay_method=CRYPTO` and provide `network` as specified by the create endpoint; a network name is not the `pay_method`. `COMMON` represents other channel methods. Check the API result for availability.
+
+### Query configured merchant methods
+
+`POST https://gateway.pay247.io/gateway/payin/methods`. The JSON request requires `mch_id`, `timestamp`, `version`, `uuid`, and `sign`. `timestamp` must be an integer. See [Signature](/api-reference/en/sign). The response contains both payin and payout configurations; use `type` to distinguish them.
+
+```json
+{
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>"
+}
+```
+
+A successful response returns `data.pay_methods` as an array. Each entry has `currency`, `pay_method`, `type` (`payin`/`payout`), `status` (`ON`/`OFF`), `tips`, `min`, `max` and `required`.
+
+| `data.pay_methods` field | Type | Description |
+|---|---|---|
+| `currency` | string | Currency configured for this merchant |
+| `pay_method` | string | Method code to use when creating an order |
+| `type` | string | `payin` or `payout` |
+| `status` | string | Current method status: `ON` or `OFF` |
+| `tips` | string | Availability message; may be empty |
+| `min` | number or string | Minimum amount for the current channel |
+| `max` | number or string | Maximum amount for the current channel |
+| `required` | array | Additional fields recommended by the current channel |
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "pay_methods": [
+      {"currency": "INR", "pay_method": "UPI", "type": "payin", "status": "ON", "tips": "", "min": 1, "max": 10000, "required": []},
+      {"currency": "INR", "pay_method": "BANK", "type": "payout", "status": "ON", "tips": "", "min": 1, "max": 10000, "required": []}
+    ]
+  }
+}
+```
+
+Use the actual response for amount limits and required fields.

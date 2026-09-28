@@ -1,78 +1,118 @@
 ---
-title: 'Query'
+title: 'Query balance'
 ---
 
 ### Request URL
-- `https://gateway.pay247.io/gateway/balance `
+
+`https://gateway.pay247.io/gateway/balance`
 
 ### Request Method
-- POST
 
-### Request Parameters
+POST
 
-| Parameter | Must    | Type  |  Explanation  |
-|:----    |:---|:----- |-----   |
-|mch_id |Yes  |string |Merchant ID   |
-|timestamp |Yes  |string | Timestamp  |
-|version |Yes  |string | v3.0 |
-|uuid  | Yes  | string   |Request UUID: 550e8400-e29b-41d4-a716-446655440000 |
-|sign |Yes  |string | Signature string |
+`timestamp` must be an integer; examples use milliseconds. Use `v3.0` for `version`. Calculate `sign` as described in [Signature](/api-reference/en/sign). Balance requests must also include `uuid` and include it in the signature. The response `uuid` comes from the request header or the server and need not match the request body.
 
+## Request fields
 
-### Response data
+| Field | Required | Type | Description |
+|---|---|---|---|
+| `mch_id` | Yes | string | Merchant ID |
+| `timestamp` | Yes | integer | Timestamp |
+| `version` | Yes | string | Use v3.0 |
+| `uuid` | Yes | string | Request ID; included in signature |
+| `sign` | Yes | string | Signature |
 
-| Parameter | Must    | Type  |  Explanation  |
-|:----    |:---|:----- |-----   |
-|mch_id |Yes  |string |Merchant ID   |
-|wallets |Yes  |array |Wallets |
-
-### For example
-
-```
+```json
 {
-    "code": 0,
-    "message": "success",
-    "uuid": "2ae0f1b3-2dc3-4488-83ac-eaa8bed6d56e",
-    "timestamp": 1735969840196,
-    "data": {
-        "mch_id": "PQSKDPKVVV10001",
-        "wallets": [
-            {
-                "balance": "11120.0000",
-                "freeze": "0.0000",
-                "currency": "CNY"
-            },
-            {
-                "balance": "120.0000",
-                "freeze": "0.0000",
-                "currency": "USD"
-            },
-            {
-                "balance": "30.0000",
-                "freeze": "0.0000",
-                "currency": "INR"
-            },
-            {
-                "balance": "0.0000",
-                "freeze": "0.0000",
-                "currency": "KRW"
-            },
-            {
-                "balance": "1000.0000",
-                "freeze": "0.0000",
-                "currency": "JPY"
-            },
-            {
-                "balance": "0.0000",
-                "freeze": "0.0000",
-                "currency": "PHP"
-            },
-            {
-                "balance": "0.0000",
-                "freeze": "0.0000",
-                "currency": "THB"
-            }
-        ]
-    }
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>"
+}
+```
+
+## Successful response data
+
+| Field | Required | Type | Description |
+|---|---|---|---|
+| `mch_id` | Yes | string | Merchant ID |
+| `wallets` | Yes | array | Wallet entries with balance, freeze, currency |
+
+Fields in each `wallets` entry:
+
+| Field | Type | Description |
+|---|---|---|
+| `balance` | string | Current wallet balance |
+| `freeze` | string | Current frozen amount |
+| `currency` | string | Wallet currency |
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "wallets": [
+      {
+        "balance": "100.0000",
+        "freeze": "0.0000",
+        "currency": "INR"
+      }
+    ]
+  }
+}
+```
+
+### Original multi-currency wallet example
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "2ae0f1b3-2dc3-4488-83ac-eaa8bed6d56e",
+  "timestamp": 1735969840196,
+  "data": {
+    "mch_id": "PQSKDPKVVV10001",
+    "wallets": [
+      {
+        "balance": "11120.0000",
+        "freeze": "0.0000",
+        "currency": "CNY"
+      },
+      {
+        "balance": "120.0000",
+        "freeze": "0.0000",
+        "currency": "USD"
+      },
+      {
+        "balance": "30.0000",
+        "freeze": "0.0000",
+        "currency": "INR"
+      },
+      {
+        "balance": "0.0000",
+        "freeze": "0.0000",
+        "currency": "KRW"
+      },
+      {
+        "balance": "1000.0000",
+        "freeze": "0.0000",
+        "currency": "JPY"
+      },
+      {
+        "balance": "0.0000",
+        "freeze": "0.0000",
+        "currency": "PHP"
+      },
+      {
+        "balance": "0.0000",
+        "freeze": "0.0000",
+        "currency": "THB"
+      }
+    ]
+  }
 }
 ```

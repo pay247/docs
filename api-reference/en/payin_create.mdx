@@ -1,212 +1,276 @@
 ---
-title: 'Create'
+title: 'Create payin'
 ---
 
 ### The payin flowchart
 
 ![flowchart](./images/payin.png)
 
-###  Request URL
+### Request URL
 
-- `https://gateway.pay247.io/gateway/payin/create`
+`https://gateway.pay247.io/gateway/payin/create`
 
 ### Request Method
 
-- POST
+POST
 
-### Request Parameters
+`timestamp` must be an integer; examples use milliseconds. Use `v3.0` for `version`. Calculate `sign` as described in [Signature](/api-reference/en/sign). All merchant requests to the gateway must include `uuid` and include it in the signature. The response `uuid` comes from the request header or the server and need not match the request body.
 
-| Parameter | Must    | Type  |  Explanation  |
-|:-------------------|:----|:----- |----------------------------------|
-| mch_id             | Yes   |string | Merchant ID                              |
-| mch_order_no       | Yes   |string | Merchant Order NO.                         |
-| mch_user_id        | Yes   |string | Merchant's User ID（When a user’s order is not paid, it allows for faster query and troubleshooting.） |
-| currency           | Yes   |string | Supports CNY, JPY, PHP, THB, SGD, etc. For a complete list of supported currencies, please refer to the merchant backoffice.            |
-| amount             | Yes   |string | 99.11                 |
-| pay_method         | No  |string |  [Pay Methods](/api-reference/en/common/#dict) If leave it empty， the user will use our cashier to choose pay method          |
-| pay_theme          | No  |string |  'link': pay247 cashier, 'custom': return pay params for custom cashier, If leave it empty， the user will use our cashier,       |
-| client_ip          | Yes   |string | The IP address of the ordering user (must be the user's real IP). |
-| notify_url         | Yes   |string | If the order changed will notify the server url                           |
-| return_url         | No   |string | If paid success, will return to this url                           |
-| payer_id           | No  |string | [Some pay method needs] the payer ID.               |
-| payer_name         | No  |string | [Some pay method needs] the payer name              |
-| payer_phone        | No  |string | [Some pay method needs] the payer phone                 |
-| payer_email        | No  |string | [Some pay method needs] the payer email                 |
-| payer_account_no   | No  |string | [Some pay method needs] the payer account_no          |
-| payer_address      | No  |string | [Some pay method needs] the payer address          |
-| payer_bank_code    | No  |string | [Some pay method needs] the payer bank code    [Bank List](/api-reference/en/banks/bank_ph)     |
-| payer_branch_code  | No  |string | [Some pay method needs] the payer branch code          |
-| timestamp          | Yes   |string | timestamp millisecond                     |
-| version            | Yes   |string | v3.0                       |
-| uuid               | Yes   |string | Request ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign               | Yes   |string | Signature                          |
+## Request fields
 
+| Field | Required | Type | Description |
+|---|---|---|---|
+| `mch_id` | Yes | string | Merchant ID |
+| `mch_order_no` | Yes | string | Unique merchant order number; a duplicate returns the existing order |
+| `currency` | Yes | string | Order currency; check method availability |
+| `amount` | Yes | number | Amount; channel limits apply |
+| `notify_url` | Yes | URL | Callback URL |
+| `pay_method` | No | string | Method code; see [catalog](/api-reference/en/pay_methods). Routing chooses if omitted |
+| `network` | Conditional | string | Required for CRYPTO: TRC20, ERC20, BEP20, SOLANA, ARBITRUM |
+| `pay_theme` | No | string | link (default) or custom |
+| `mch_user_id` | No | string | Merchant user identifier |
+| `subject` | No | string | Order subject |
+| `client_ip` | No | string | Payer IP; IP allowlist checks the actual request source |
+| `return_url` | No | URL | Return URL |
+| `payer_id` | No | string | Payer identity reference, when required by the channel |
+| `payer_name` | No | string | Payer name, when required by the channel |
+| `payer_phone` | No | string | Payer phone number, when required by the channel |
+| `payer_email` | No | string | Payer email address, when required by the channel |
+| `payer_bank_code` | No | string | Payer bank code, when required by the channel |
+| `payer_branch_code` | No | string | Payer bank branch code, when required by the channel |
+| `payer_account_no` | No | string | Payer bank account number, when required by the channel |
+| `payer_address` | No | string | Payer address, when required by the channel |
+| `bank_card` | No | string | Payer bank card details, when required by the channel |
+| `bank_card_type` | No | string | Bank card type, when required by the channel |
+| `channel_code` | No | string | Channel code; use only when arranged with the integration team |
+| `channel_account_id` | No | integer | Channel account ID; use only when arranged with the integration team |
+| `timestamp` | Yes | integer | Request timestamp |
+| `version` | Yes | string | Use v3.0 |
+| `uuid` | Yes | string | Request ID; included in signature |
+| `sign` | Yes | string | Signature |
 
-### Optional Parameters
+For `CRYPTO`, currency must be `USDT`; put the chain in `network`.
 
-| Currency           |  Pay method    | Required                         |
-|:-------------------|:-------------  |----------------------------------|
-| 🇹🇭 THB             | BANK           | payer_name, payer_account_no, payer_bank_code |
-| 🇯🇵 JPY             | BANK           | payer_name, payer_address |
-| 🇹🇼 TWD             | BANK           | payer_id, payer_name, payer_phone, payer_account_no, payer_bank_code |
+`mch_user_id` helps investigate unpaid orders; you can hash the original user identifier before sending it. Some channels require payer details. Check the `required` fields returned by [Payment methods and availability](/api-reference/en/pay_methods) and the selected channel configuration.
 
-[//]: # (| 🇯🇵 JPY             | BANK_UN        | payer_name&#40;Katakana&#41;, payer_account_no, payer_bank_code, payer_branch_code |)
+### Optional parameters by currency
 
+| Currency | Method | Fields required by some channels |
+|---|---|---|
+| THB | BANK | `payer_name`, `payer_account_no`, `payer_bank_code` |
+| JPY | BANK | `payer_name`, `payer_address` |
+| TWD | BANK | `payer_id`, `payer_name`, `payer_phone`, `payer_account_no`, `payer_bank_code` |
 
-### For example
+See the [Philippine bank list](/api-reference/en/banks/bank_ph) and the relevant country bank list for bank codes.
 
-```
+```json
 {
-  "mch_id": "Q0P5T8DOGN10000",
-  "mch_order_no": "TRADE-405189",
-  "mch_user_id": "U405189",
-  "currency": "CNY",
-  "amount": "99.11",
-  "pay_mehod": "GCASH",
-  "pay_theme": "link",
-  "notify_url": "https://x.com/notify",
-  "return_url": "https://x.com/return",
-  "timestamp": "1693233334134",
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
   "version": "v3.0",
-  "client_ip": "8.8.8.8",
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYIN-1001",
+  "currency": "INR",
+  "amount": "99.11",
+  "pay_method": "UPI",
+  "notify_url": "https://merchant.example/notify/payin",
+  "pay_theme": "link"
 }
 ```
 
-### Response Data
-| Parameter | Must    | Type  |  Explanation  |
-|:-------------|:---|:----- |--------------------|
-| mch_id     |Yes  |string | Merchant ID.              |
-| order_no     |Yes  |string | System Order No.              |
-| mch_order_no |Yes  |string | Merchant Order No.              |
-| currency     |Yes  |string | CNY、 THB、PHP、VND... See more at backoffice      |
-| amount       |Yes  |string | 99.11  |
-| pay_method   |Yes  |string | pay method |
-| pay_theme    |Yes  |string | pay theme, link: pay247 cashier, custom: for merhcant to custom cashier  |
-| pay_url      |Optional  |string | payment url for theme of link,  need to redirect here        |
-| pay_params   |Optional  |object | payment params for theme of custom, need to custom cashier page    |
-| status    |No  |string | The order status                |
+## Successful response data
+
+| Field | Required | Type | Description |
+|---|---|---|---|
+| `mch_id` | Yes | string | Merchant ID |
+| `order_no` | Yes | string | Platform order number |
+| `mch_order_no` | Yes | string | Merchant order number |
+| `mch_user_id` | Yes | string | Merchant user ID; may be empty |
+| `currency` | Yes | string | Currency |
+| `amount` | Yes | string | Amount |
+| `pay_method` | Yes | string | Selected method |
+| `pay_theme` | Yes | string | Theme |
+| `status` | Yes | string | Order status |
+| `pay_url` | Yes | string | Cashier URL; may not yet be ready |
+| `pay_params` | No | object | Channel-specific custom payment details |
+| `network` | CRYPTO only | string | Crypto network code; returned only for CRYPTO orders |
+| `to_address` | CRYPTO only | string | Destination wallet address; returned only for CRYPTO orders and may be empty before assignment |
+| `confirmations` | CRYPTO only | integer | On-chain confirmation count; returned only for CRYPTO orders |
+| `transaction_hash` | CRYPTO only | string | On-chain transaction hash; returned only for CRYPTO orders and empty before available |
 
 ### For example (Cashier)
 
-```
+```json
 {
-	"code": 0,
-	"message": "success",
-	"uuid": "550e8400-e29b-41d4-a716-446655440000",
-	"timestamp": "1693233334134",
-	"data": {
-		"mch_id": "MCH12345678",
-		"mch_order_no": "23082822325936693122",
-		"order_no": "MO202308282232593669984082",
-		"currency": "USD",
-		"amount": "59.12",
-		"pay_method": "BANK",
-		"pay_theme": "link",
-		"status": "PENDING",
-		"pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
-	}
-}
-```
-
-### For example USDT
-
-* Request
-```
-{
-  "mch_id": "Q0P5T8DOGN10000",
-  "mch_order_no": "TRADE-405189",
-  "mch_user_id": "U405189",
-  "currency": "USDT",
-  "amount": "99.11",
-  "pay_mehod": "TRC20",
-  "notify_url": "https://x.com/notify",
-  "return_url": "https://x.com/return",
-  "timestamp": "1693233334134",
-  "version": "v3.0",
-  "client_ip": "8.8.8.8",
+  "code": 0,
+  "message": "success",
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "order_no": "PI202609280001",
+    "mch_order_no": "PAYIN-1001",
+    "mch_user_id": "",
+    "currency": "INR",
+    "amount": "99.11",
+    "pay_method": "UPI",
+    "pay_theme": "link",
+    "status": "PENDING",
+    "pay_url": "https://checkout.example/pay/PI202609280001"
+  }
 }
 ```
-* Response
 
-```
+### For example USDT request (CRYPTO)
+
+```json
 {
-	"code": 0,
-	"message": "success",
-	"uuid": "550e8400-e29b-41d4-a716-446655440000",
-	"timestamp": "1693233334134",
-	"data": {
-		"mch_id": "MCH12345678",
-		"mch_order_no": "23082822325936693122",
-		"order_no": "MO202308282232593669984082",
-		"currency": "USDT",
-		"amount": "59.12",
-		"pay_method": "ERC20",
-		"status": "PENDING",
-		"pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
-	}
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYIN-1002",
+  "currency": "USDT",
+  "amount": "50.00",
+  "pay_method": "CRYPTO",
+  "network": "TRC20",
+  "notify_url": "https://merchant.example/notify/payin"
+}
+```
+
+### For example USDT response (CRYPTO)
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "PAYIN-1002",
+    "order_no": "PI202609280002",
+    "mch_user_id": "",
+    "currency": "USDT",
+    "amount": "50.00",
+    "pay_method": "CRYPTO",
+    "pay_theme": "link",
+    "status": "PENDING",
+    "network": "TRC20",
+    "to_address": "",
+    "confirmations": 0,
+    "transaction_hash": "",
+    "pay_url": "https://checkout.example/pay/PI202609280002"
+  }
 }
 ```
 
 ### For example (Custom) Support JPY
 
-```
+```json
 {
-	"code": 0,
-	"message": "success",
-	"uuid": "550e8400-e29b-41d4-a716-446655440000",
-	"timestamp": "1693233334134",
-	"data": {
-		"mch_id": "MCH12345678",
-		"mch_order_no": "23082822325936693122",
-		"order_no": "MO202308282232593669984082",
-		"currency": "USD",
-		"amount": "59.12",
-		"pay_method": "BANK",
-		"pay_theme": "custom",
-		"status": "PENDING",
-		"pay_params": {
-			"payee_name": "日本測試卡",
-			"payee_account_no": "123",
-			"payee_bank_name": "三菱UFJ銀行",
-			"payee_branch_name": "日本測試卡",
-			"qr": ""
-		}
-	}
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334134,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "23082822325936693122",
+    "order_no": "MO202308282232593669984082",
+    "mch_user_id": "",
+    "currency": "JPY",
+    "amount": "59.12",
+    "pay_method": "BANK",
+    "pay_theme": "custom",
+    "status": "PENDING",
+    "pay_params": {
+      "payee_name": "日本測試卡",
+      "payee_account_no": "123",
+      "payee_bank_name": "三菱UFJ銀行",
+      "payee_branch_name": "日本測試卡",
+      "qr": ""
+    },
+    "pay_url": ""
+  }
 }
 ```
 
-
 ### For example (Custom) Support INR
 
-```
+```json
 {
-	"code": 0,
-	"message": "success",
-	"uuid": "219bf2a2-8994-4ab0-b850-a5c1c70316e5",
-	"timestamp": 1756736237009,
-	"data": {
-		"mch_order_no": "1119132492",
-		"order_no": "PI202509012031309225639045",
-		"currency": "INR",
-		"amount": "23000.00",
-		"pay_method": "UPI",
-		"fee": "1495.00",
-		"pay_theme": "custom",
-		"utr": "395141536523",
-		"error": null,
-		"status": "PENDING",
-		"pay_params": {
-			"payee_name": "AJ ENTERPRISE",
-			"payee_account_no": "ajenter66@sbi",
-			"payee_bank_name": "",
-			"payee_branch_name": "",
-			"qr": "upi://pay?pa=ajenter66@sbi&pn=AJ ENTERPRISE&tn=O04T&am=22999.48&cu=INR&featuretype=money_transfer",
-			"payee_phone": ""
-		}
-	}
+  "code": 0,
+  "message": "success",
+  "uuid": "219bf2a2-8994-4ab0-b850-a5c1c70316e5",
+  "timestamp": 1756736237009,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "1119132492",
+    "order_no": "PI202509012031309225639045",
+    "mch_user_id": "",
+    "currency": "INR",
+    "amount": "23000.00",
+    "pay_method": "UPI",
+    "pay_theme": "custom",
+    "status": "PENDING",
+    "pay_params": {
+      "payee_name": "AJ ENTERPRISE",
+      "payee_account_no": "ajenter66@sbi",
+      "payee_bank_name": "",
+      "payee_branch_name": "",
+      "qr": "upi://pay?pa=ajenter66@sbi&pn=AJ ENTERPRISE&tn=O04T&am=22999.48&cu=INR&featuretype=money_transfer",
+      "payee_phone": ""
+    },
+    "pay_url": ""
+  }
+}
+```
+
+`pay_params` comes from the selected channel, so its fields and values vary. The two Custom examples retain the original Japanese bank and Indian UPI payment details. Create responses do not include `fee`, `utr`, or `error`; use [Query payin](/api-reference/en/payin_query) for those fields.
+
+### Original payin request example (fields corrected)
+
+```json
+{
+  "mch_id": "Q0P5T8DOGN10000",
+  "mch_order_no": "TRADE-405189",
+  "mch_user_id": "U405189",
+  "currency": "PHP",
+  "amount": "99.11",
+  "pay_method": "GCASH",
+  "pay_theme": "link",
+  "notify_url": "https://x.com/notify",
+  "return_url": "https://x.com/return",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "client_ip": "8.8.8.8",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>"
+}
+```
+The original example combined `CNY` with `GCASH` and misspelled `pay_method` as `pay_mehod`; this version uses `PHP` and the correct field name.
+
+### Original cashier response example
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "23082822325936693122",
+    "order_no": "MO202308282232593669984082",
+    "mch_user_id": "",
+    "currency": "USD",
+    "amount": "59.12",
+    "pay_method": "BANK",
+    "pay_theme": "link",
+    "status": "PENDING",
+    "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
+  }
 }
 ```

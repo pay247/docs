@@ -1,178 +1,276 @@
 ---
-title: '创建订单'
+title: '创建代收订单'
 ---
 
 ### 支付流程图
 
-
 ![支付流程](./images/payin.png)
 
-###  请求URL
+### 请求URL
 
-- `https://gateway.pay247.io/gateway/payin/create`
+`https://gateway.pay247.io/gateway/payin/create`
 
 ### 请求方式
 
-- POST
+POST
 
-### 请求参数
+`timestamp` 使用整数，示例为毫秒；`version` 建议使用 `v3.0`。`sign` 需按[签名算法](/api-reference/cn/sign)计算。所有商户发往网关的请求都必须传 `uuid`，并将其计入签名。响应的 `uuid` 由响应头或服务端生成，不保证等于请求体中的 `uuid`。
 
-| 参数名                | 必选  |类型| 说明                               |
-|:-------------------|:----|:----- |----------------------------------|
-| mch_id             | 是   |string | 商户号                              |
-| mch_order_no       | 是   |string | 商户自生成订单号                         |
-| mch_user_id        | 是   |string | 商户用户的唯一标识（如果想隐藏用户id明文，可以使用md5加密传递） |
-| currency           | 是   |string | 支持【CNY,JPY,PHP,THB,SGD等 ，更多参考商户后台】            |
-| amount             | 是   |string | 99.11  单位元，支持到两位小数               |
-| pay_method         | 否  |string | [支付方式](/api-reference/en/common/#dict) ，如果为空，自动选择可用的支付方式          |
-| pay_theme          | 可选  |string | 1. link: 收银台模式（默认），2. custom: 自定义模式，会返回银行卡或者收款码信息，商户需自己封装 |
-| client_ip          | 是   |string | 下单用户的IP地址（一定要是用户的真实IP）           |
-| notify_url         | 是   |string | 异步通知地址                           |
-| return_url         | 否   |string | 同步跳转地址                           |
-| payer_id           | 可选  |string | 【依据相关渠道】付款人身份证号                |
-| payer_name         | 可选  |string | 【依据相关渠道】付款人姓名                 |
-| payer_phone        | 可选  |string | 【依据相关渠道】付款人手机号                 |
-| payer_email        | 可选  |string | 【依据相关渠道】付款人邮箱                   |
-| payer_account_no | 可选  |string | 【依据相关渠道】 付款人银行卡号               |
-| payer_bank_code | 可选  |string | 【依据相关渠道】 付款人银行代码   [银行列表](/api-reference/cn/banks/bank_ph)             |
-| payer_bank_branch | 可选  |string | 【依据相关渠道】 付款人银行支行               |
-| timestamp          | 是   |string | unix秒级时间戳                        |
-| version            | 是   |string | 接口版本: v3.0                       |
-| uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign               | 是   |string | 签名token                          |
+## 请求参数
 
+| 参数 | 必填 | 类型 | 说明 |
+|---|---|---|---|
+| `mch_id` | 是 | string | 商户号 |
+| `mch_order_no` | 是 | string | 商户唯一订单号；重复提交返回现有订单 |
+| `currency` | 是 | string | 订单币种；可用组合见支付方式接口 |
+| `amount` | 是 | number | 订单金额；须满足通道限额 |
+| `notify_url` | 是 | URL | 异步通知地址 |
+| `pay_method` | 否 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods)；省略时由通道选择 |
+| `network` | 条件必填 | string | CRYPTO 时必填：TRC20、ERC20、BEP20、SOLANA、ARBITRUM |
+| `pay_theme` | 否 | string | link（默认）或 custom |
+| `mch_user_id` | 否 | string | 商户用户标识 |
+| `subject` | 否 | string | 订单说明 |
+| `client_ip` | 否 | string | 付款用户 IP；白名单校验使用实际请求来源 IP |
+| `return_url` | 否 | URL | 同步跳转地址 |
+| `payer_id` | 否 | string | 付款人身份标识，通道要求时提供 |
+| `payer_name` | 否 | string | 付款人姓名，通道要求时提供 |
+| `payer_phone` | 否 | string | 付款人手机号，通道要求时提供 |
+| `payer_email` | 否 | string | 付款人邮箱，通道要求时提供 |
+| `payer_bank_code` | 否 | string | 付款人银行代码，通道要求时提供 |
+| `payer_branch_code` | 否 | string | 付款人银行支行代码，通道要求时提供 |
+| `payer_account_no` | 否 | string | 付款人银行账号，通道要求时提供 |
+| `payer_address` | 否 | string | 付款人地址，通道要求时提供 |
+| `bank_card` | 否 | string | 付款人银行卡信息，通道要求时提供 |
+| `bank_card_type` | 否 | string | 银行卡类型，通道要求时提供 |
+| `channel_code` | 否 | string | 指定通道编码，仅与对接人员确认后使用 |
+| `channel_account_id` | 否 | integer | 指定通道账户 ID，仅与对接人员确认后使用 |
+| `timestamp` | 是 | integer | 请求时间戳 |
+| `version` | 是 | string | 建议 v3.0 |
+| `uuid` | 是 | string | 请求标识，参与签名 |
+| `sign` | 是 | string | 签名 |
 
+使用 `CRYPTO` 时币种必须为 `USDT`；网络只放在 `network` 字段。
 
-### 可选参数说明
+`mch_user_id` 可用于未支付订单排查；如需隐藏原始用户标识，可在传入前做单向摘要。部分通道要求付款人资料，具体必填项请结合[支付方式查询](/api-reference/cn/pay_methods)返回的 `required` 与通道配置。
 
-| 币种           |  支付方式    | 必填                         |
-|:-------------------|:-------------  |----------------------------------|
-| 🇹🇭 THB             | BANK           | payer_name, payer_account_no, payer_bank_code |
-| 🇯🇵 JPY             | BANK           | payer_name, payer_address |
-| 🇹🇼 TWD             | BANK           | payer_id, payer_name, payer_phone, payer_account_no, payer_bank_code |
+### 按币种的付款人资料示例
 
+| 币种 | 支付方式 | 部分通道要求的字段 |
+|---|---|---|
+| THB | BANK | `payer_name`, `payer_account_no`, `payer_bank_code` |
+| JPY | BANK | `payer_name`, `payer_address` |
+| TWD | BANK | `payer_id`, `payer_name`, `payer_phone`, `payer_account_no`, `payer_bank_code` |
 
-### 请求参数示例
+银行代码可参考[菲律宾银行列表](/api-reference/cn/banks/bank_ph)及对应国家的银行列表。原文中的 `payer_bank_branch` 在当前网关参数名为 `payer_branch_code`。
 
+```json
+{
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYIN-1001",
+  "currency": "INR",
+  "amount": "99.11",
+  "pay_method": "UPI",
+  "notify_url": "https://merchant.example/notify/payin",
+  "pay_theme": "link"
+}
 ```
+
+## 成功响应 data
+
+| 参数 | 必填 | 类型 | 说明 |
+|---|---|---|---|
+| `mch_id` | 是 | string | 商户号 |
+| `order_no` | 是 | string | 平台订单号 |
+| `mch_order_no` | 是 | string | 商户订单号 |
+| `mch_user_id` | 是 | string | 商户用户标识，未传时可为空字符串 |
+| `currency` | 是 | string | 币种 |
+| `amount` | 是 | string | 订单金额 |
+| `pay_method` | 是 | string | 实际支付方式 |
+| `pay_theme` | 是 | string | 支付主题 |
+| `status` | 是 | string | 订单状态 |
+| `pay_url` | 是 | string | 收银台链接，可能暂未生成 |
+| `pay_params` | 否 | object | 通道返回的自定义收款参数 |
+| `network` | 仅 CRYPTO | string | 加密货币网络代码，仅 CRYPTO 订单返回 |
+| `to_address` | 仅 CRYPTO | string | 链上收款地址，仅 CRYPTO 订单返回，尚未分配时可能为空 |
+| `confirmations` | 仅 CRYPTO | integer | 链上确认数，仅 CRYPTO 订单返回 |
+| `transaction_hash` | 仅 CRYPTO | string | 链上交易哈希，仅 CRYPTO 订单返回，未产生时为空 |
+
+### 示例：默认收银台（link）
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "order_no": "PI202609280001",
+    "mch_order_no": "PAYIN-1001",
+    "mch_user_id": "",
+    "currency": "INR",
+    "amount": "99.11",
+    "pay_method": "UPI",
+    "pay_theme": "link",
+    "status": "PENDING",
+    "pay_url": "https://checkout.example/pay/PI202609280001"
+  }
+}
+```
+
+### 示例：USDT 收款请求（CRYPTO）
+
+```json
+{
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYIN-1002",
+  "currency": "USDT",
+  "amount": "50.00",
+  "pay_method": "CRYPTO",
+  "network": "TRC20",
+  "notify_url": "https://merchant.example/notify/payin"
+}
+```
+
+### 示例：USDT 收款响应（CRYPTO）
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "PAYIN-1002",
+    "order_no": "PI202609280002",
+    "mch_user_id": "",
+    "currency": "USDT",
+    "amount": "50.00",
+    "pay_method": "CRYPTO",
+    "pay_theme": "link",
+    "status": "PENDING",
+    "network": "TRC20",
+    "to_address": "",
+    "confirmations": 0,
+    "transaction_hash": "",
+    "pay_url": "https://checkout.example/pay/PI202609280002"
+  }
+}
+```
+
+### 示例：自定义收银台（Custom）JPY
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334134,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "23082822325936693122",
+    "order_no": "MO202308282232593669984082",
+    "mch_user_id": "",
+    "currency": "JPY",
+    "amount": "59.12",
+    "pay_method": "BANK",
+    "pay_theme": "custom",
+    "status": "PENDING",
+    "pay_params": {
+      "payee_name": "日本測試卡",
+      "payee_account_no": "123",
+      "payee_bank_name": "三菱UFJ銀行",
+      "payee_branch_name": "日本測試卡",
+      "qr": ""
+    },
+    "pay_url": ""
+  }
+}
+```
+
+### 示例：自定义收银台（Custom）INR
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "219bf2a2-8994-4ab0-b850-a5c1c70316e5",
+  "timestamp": 1756736237009,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "1119132492",
+    "order_no": "PI202509012031309225639045",
+    "mch_user_id": "",
+    "currency": "INR",
+    "amount": "23000.00",
+    "pay_method": "UPI",
+    "pay_theme": "custom",
+    "status": "PENDING",
+    "pay_params": {
+      "payee_name": "AJ ENTERPRISE",
+      "payee_account_no": "ajenter66@sbi",
+      "payee_bank_name": "",
+      "payee_branch_name": "",
+      "qr": "upi://pay?pa=ajenter66@sbi&pn=AJ ENTERPRISE&tn=O04T&am=22999.48&cu=INR&featuretype=money_transfer",
+      "payee_phone": ""
+    },
+    "pay_url": ""
+  }
+}
+```
+
+`pay_params` 由具体通道返回，字段和值可能不同；以上两个 Custom 示例保留了原有的日本银行收款和印度 UPI 收款信息。创建接口不返回 `fee`、`utr` 或 `error`，需要这些字段时请调用[代收订单查询](/api-reference/cn/payin_query)。
+
+### 原有代收请求示例（已修正字段）
+
+```json
 {
   "mch_id": "Q0P5T8DOGN10000",
   "mch_order_no": "TRADE-405189",
   "mch_user_id": "U405189",
-  "currency": "CNY",
+  "currency": "PHP",
   "amount": "99.11",
-  "pay_mehod": "GCASH",
+  "pay_method": "GCASH",
   "pay_theme": "link",
   "notify_url": "https://x.com/notify",
   "return_url": "https://x.com/return",
-  "timestamp": "1693233334134",
+  "timestamp": 1693233334134,
   "version": "v3.0",
   "client_ip": "8.8.8.8",
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
+  "sign": "<computed signature>"
 }
 ```
+原示例把 `CNY` 与 `GCASH` 放在同一请求，并误写为 `pay_mehod`；这里改为 `PHP` 与 `pay_method`。
 
-| 响应参数名(data)  |必选|类型| 说明                 |
-|:-------------|:---|:----- |--------------------|
-| mch_id       |是  |string | 商户号              |
-| mch_order_no |是  |string | 商户订单号              |
-| order_no     |是  |string | 系统订单号              |
-| currency     |是  |string | CNY, THB, PHP      |
-| amount       |是  |string | 99.00  单位元，支持到两位小数 |
-| pay_method   |是  |string | 银行名                |
-| pay_theme    |是  |string | 账号                 |
-| status       |是  |string | 订单状态 |
-| pay_url      |是  |string | 支付链接，获取后跳转         |
+### 原有默认收银台响应示例
 
-**返回示例(默认收银台模式)**
-
-```
+```json
 {
-	"code": 0,
-	"message": "success",
-	"uuid": "550e8400-e29b-41d4-a716-446655440000",
-	"timestamp": "1693233334134",
-	"data": {
-		"mch_id": "MCH12345678",
-		"mch_order_no": "23082822325936693122",
-		"order_no": "MO202308282232593669984082",
-		"currency": "USD",
-		"amount": "59.12",
-		"pay_method": "BANK",
-		"pay_theme": "link",
-		"status": "PENDING",
-		"pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
-	}
-}
-```
-
-**返回示例(自定义收银台模式) 当前支持JPY**
-
-```
-{
-	"code": 0,
-	"message": "success",
-	"uuid": "550e8400-e29b-41d4-a716-446655440000",
-	"timestamp": "1693233334134",
-	"data": {
-		"mch_id": "MCH12345678",
-		"mch_order_no": "23082822325936693122",
-		"order_no": "MO202308282232593669984082",
-		"currency": "USD",
-		"amount": "59.12",
-		"pay_method": "BANK",
-		"pay_theme": "custom",
-		"status": "PENDING",
-		"pay_params": {
-			"payee_name": "日本測試卡",
-			"payee_account_no": "123",
-			"payee_bank_name": "三菱UFJ銀行",
-			"payee_branch_name": "日本測試卡",
-			"qr": ""
-		}
-	}
-}
-```
-
-
-### 示例-USDT 收款
-
-* Request
-```
-{
-  "mch_id": "Q0P5T8DOGN10000",
-  "mch_order_no": "TRADE-405189",
-  "mch_user_id": "U405189",
-  "currency": "USDT",
-  "amount": "99.11",
-  "pay_mehod": "TRC20",
-  "notify_url": "https://x.com/notify",
-  "return_url": "https://x.com/return",
-  "timestamp": "1693233334134",
-  "version": "v3.0",
-  "client_ip": "8.8.8.8",
+  "code": 0,
+  "message": "success",
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "sign": "81930c5a04d1c58fd1efe33b06e2ffa7"
-}
-```
-* Response
-
-```
-{
-	"code": 0,
-	"message": "success",
-	"uuid": "550e8400-e29b-41d4-a716-446655440000",
-	"timestamp": "1693233334134",
-	"data": {
-		"mch_id": "MCH12345678",
-		"mch_order_no": "23082822325936693122",
-		"order_no": "MO202308282232593669984082",
-		"currency": "USDT",
-		"amount": "59.12",
-		"pay_method": "ERC20",
-		"status": "PENDING",
-		"pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
-	}
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "23082822325936693122",
+    "order_no": "MO202308282232593669984082",
+    "mch_user_id": "",
+    "currency": "USD",
+    "amount": "59.12",
+    "pay_method": "BANK",
+    "pay_theme": "link",
+    "status": "PENDING",
+    "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr"
+  }
 }
 ```
