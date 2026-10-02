@@ -1,0 +1,101 @@
+---
+title: '支付方式与开通情况'
+---
+
+以下是网关识别的支付方式代码，不代表每个商户、币种及代收/代付方向都已开通。请调用下方接口，以返回的 `currency`、`type`、`pay_method` 和 `status` 为准；实际下单仍受商户费率、通道状态及金额限制影响。
+
+### 支付方式代码
+
+| 代码 | 名称 |
+|---|---|
+| `UPI` | UPI |
+| `UPI_INTENT` | UPI Intent |
+| `UPI_NATIVE` | UPI Native |
+| `IMPS` | IMPS |
+| `BANK` | Bank |
+| `BANK_BCA` | Bank BCA |
+| `BANK_QR` | Bank QR |
+| `NATIVE_QR` | Native QR |
+| `EWALLET` | EWallet |
+| `WECHAT` | WechatPay |
+| `ALIPAY` | Alipay |
+| `PROMPTPAY` | PromptPay |
+| `THAIQR` | ThaiQR |
+| `GCASH` | GCash |
+| `MAYA` | Maya |
+| `GRABPAY` | GrabPay |
+| `SHOPEEPAY` | ShopeePay |
+| `LINEPAY` | LinePay |
+| `GOTYME` | Gotyme |
+| `MOMO` | Momo |
+| `ZALO` | Zalo |
+| `VIETTEL` | Viettel |
+| `VIETQR` | VietQR |
+| `DANA` | Dana |
+| `QRIS` | QRIS |
+| `DOKUVA` | DOKUVA |
+| `TNG` | Touch‘n Go |
+| `MBB` | MayBank |
+| `TRUEMONEY` | TrueMoney |
+| `SPEI` | SPEI |
+| `BOOST` | Boost |
+| `DUITNOW` | DuitNow |
+| `BNI` | BNI |
+| `BRI` | BRI |
+| `MANDIRI` | MANDIRI |
+| `PERMATA` | PERMATA |
+| `BKASH` | bKash |
+| `NAGAD` | Nagad |
+| `ROCKET` | Rocket |
+| `BCEL` | BCEL |
+| `JAZZCASH` | JAZZCASH |
+| `EASYPAISA` | EASYPAISA |
+| `PAYNOW` | PAYNOW |
+| `CRYPTO` | CRYPTO |
+| `COMMON` | Other |
+
+加密货币订单使用 `pay_method=CRYPTO`，并按代收/代付接口要求传 `network`。`TRC20` 和 `ERC20` 是网络值，不是支付方式代码。`COMMON` 表示其他通道方式，是否可用以接口返回为准。
+
+### 查询商户已配置的支付方式
+
+`POST https://gateway.pay247.io/gateway/payin/methods`。请求 JSON 需包含 `mch_id`、`timestamp`、`version`、`uuid`、`sign`。`timestamp` 为整数；签名规则见[签名算法](/api-reference/cn/sign)。接口返回代收和代付配置，按 `type` 区分。
+
+```json
+{
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>"
+}
+```
+
+成功响应的 `data.pay_methods` 为数组，每项包含 `currency`, `pay_method`, `type` (`payin`/`payout`), `status` (`ON`/`OFF`), `tips`, `min`, `max` 和 `required`。
+
+| `data.pay_methods` 项字段 | 类型 | 说明 |
+|---|---|---|
+| `currency` | string | 商户配置的订单币种 |
+| `pay_method` | string | 支付方式代码，须与创建订单时使用的代码一致 |
+| `type` | string | `payin` 代收或 `payout` 代付 |
+| `status` | string | 当前方式状态，`ON` 或 `OFF` |
+| `tips` | string | 方式不可用时的提示信息，可能为空 |
+| `min` | number 或 string | 当前通道允许的最低金额 |
+| `max` | number 或 string | 当前通道允许的最高金额 |
+| `required` | array | 当前通道建议的附加必填字段 |
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "pay_methods": [
+      {"currency": "INR", "pay_method": "UPI", "type": "payin", "status": "ON", "tips": "", "min": 1, "max": 10000, "required": []},
+      {"currency": "INR", "pay_method": "BANK", "type": "payout", "status": "ON", "tips": "", "min": 1, "max": 10000, "required": []}
+    ]
+  }
+}
+```
+
+金额范围及必填字段以实际返回值为准。

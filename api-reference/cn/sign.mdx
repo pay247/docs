@@ -2,15 +2,17 @@
 title: '签名算法'
 ---
 
+所有商户发往网关的请求都必须包含 `uuid`；签名时将 `uuid` 与其他已发送参数一起排序并计算。
+
 ### 签名算法说明
 ```
 一、组装参数:
-    假设所有发送者接收到的数据为集合 M，将集合 M 内非空值（空类型，即NULL）的参数，按照参数名 ASCII 码从小到大排
+    假设所有发送者接收到的数据为集合 M，将集合 M 中除 sign 外的所有已发送参数，按照参数名 ASCII 码从小到大排
 序 ( 字典序 )，使用 URL 键值对的格式拼接成字符串 str："key1=value1&key2=value2&key3=value3..."
 特别注意以下重要规则：
 1. 参数名 ASCII 码从小到大排序 ( 字典序 )。
 2. 参数名区分大小写。
-3. （建议）如果请求数据为字符串，建议去除字符前后的空格
+3. （建议）如果请求数据为字符串，建议在发送前去除字符前后的空格；不对值做 URL 编码，也不自动忽略空值
 4. 不参与签名的参数：
     传送的参数名 sign
 二、拼接商户密钥:
@@ -22,6 +24,7 @@ title: '签名算法'
 ```
 
 function sign($data, $secret){
+	unset($data['sign']);
 	ksort($data);
 	$param = [];
 	foreach ($data as $k => $v) {
@@ -39,6 +42,7 @@ function sign($data, $secret){
 		public static String sign(Map<String, Object> data, String secret) {
 				// 按键排序
 				SortedMap<String, Object> sortedData = new TreeMap<>(data);
+				sortedData.remove("sign");
 
 				// 构建参数字符串
 				StringBuilder param = new StringBuilder();
@@ -46,7 +50,7 @@ function sign($data, $secret){
 						String key = entry.getKey();
 						Object value = entry.getValue();
 						// 如果值是整数，转换为字符串
-						String valueStr = value instanceof Integer ? String.valueOf(value) : value.toString();
+						String valueStr = value == null ? "" : value.toString();
 
 						// 拼接参数
 						if (param.length() > 0) {
@@ -66,7 +70,7 @@ function sign($data, $secret){
 						byte[] array = md.digest(input.getBytes("UTF-8"));
 						StringBuilder sb = new StringBuilder();
 						for (byte b : array) {
-								sb.append(String.format("%02x", b));
+								sb.append(String.format("%02x", b & 0xff));
 						}
 						return sb.toString();
 				} catch (Exception e) {

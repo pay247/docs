@@ -1,57 +1,106 @@
 ---
-title: '查询订单'
+title: '查询代付订单'
 ---
 
 ### 请求URL
-- `https://gateway.pay247.io/gateway/payout/query `
+
+`https://gateway.pay247.io/gateway/payout/query`
 
 ### 请求方式
-- POST
-### 请求参数
 
-| 参数名         |必选|类型|说明|
-|:------------|:---|:----- |------   |
-| mch_id      |是  |string |商户号   |
-| mch_order_no|是  |string | 商户订单号 |
-| timestamp   |是  |string | unix时间戳  |
-| version     |是  |string | 接口版本: v3.0 |
-|uuid  | 是  | string   | 请求ID: 550e8400-e29b-41d4-a716-446655440000 |
-| sign        |是  |string | 最后追加的签名 |
+POST
 
+`timestamp` 使用整数，示例为毫秒；`version` 建议使用 `v3.0`。`sign` 需按[签名算法](/api-reference/cn/sign)计算。所有商户发往网关的请求都必须传 `uuid`，并将其计入签名。响应的 `uuid` 由响应头或服务端生成，不保证等于请求体中的 `uuid`。
 
-### 返回参数说明data
+此接口不返回 `paid_at` 或 `pay_method`。
 
-|参数名|必选|类型|说明|
-|:----|:---|:-----|-----|
-|mch_id |是  |string |商户号   |
-|mch_order_no |是  |string |商户订单号 |
-|order_no |是  |string |系统订单号 |
-|utr      | 是  | string | 支付机构订单号                       |
-|currency |是  |string |订单币种 |
-|amount |是  |string |订单金额 |
-|fee |是  |string |手续费 |
-|status |是  |status |状态 CONFIRMING: 待审批；PENDING：等待支付； DEALING：处理中； SUCCESS：转账成功；FAIL：失败； |
-|receipt |否  |string |交易凭证|
-|paid_at |否  |string |付款时间，毫秒时间戳|
-|error |否 |string |处理失败时的错误提示，其它状态可能为空字符串 |
+## 请求参数
 
-### 返回示例
+| 参数 | 必填 | 类型 | 说明 |
+|---|---|---|---|
+| `mch_id` | 是 | string | 商户号 |
+| `mch_order_no` | 是 | string | 商户订单号 |
+| `timestamp` | 是 | integer | 时间戳 |
+| `version` | 是 | string | 建议 v3.0 |
+| `uuid` | 是 | string | 请求标识 |
+| `sign` | 是 | string | 签名 |
 
+```json
+{
+  "mch_id": "MCH12345678",
+  "timestamp": 1693233334134,
+  "version": "v3.0",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "sign": "<computed signature>",
+  "mch_order_no": "PAYOUT-1001"
+}
 ```
+
+## 成功响应 data
+
+| 参数 | 必填 | 类型 | 说明 |
+|---|---|---|---|
+| `mch_id` | 是 | string | 商户号，标识该订单所属商户 |
+| `mch_order_no` | 是 | string | 商户提交的订单号 |
+| `order_no` | 是 | string | Pay247 生成的平台订单号 |
+| `currency` | 是 | string | 币种 |
+| `amount` | 是 | string | 订单金额，以订单币种计 |
+| `fee` | 是 | string | 订单手续费，以订单币种计 |
+| `status` | 是 | string | CONFIRMING、PENDING、DEALING、SUCCESS、FAIL；冲正对商户显示为 FAIL |
+| `utr` | 是 | string | 交易参考号，无数据时为空 |
+| `receipt` | 是 | string | 凭证 URL，无数据时为空 |
+| `remarks` | 是 | string | 订单备注，可能为空 |
+| `error` | 是 | string | 处理失败或异常信息，可能为空 |
+| `network` | 仅 CRYPTO | string | 加密货币网络代码，仅 CRYPTO 订单返回 |
+| `to_address` | 仅 CRYPTO | string | 链上收款地址，仅 CRYPTO 订单返回，尚未分配时可能为空 |
+| `from_address` | 仅 CRYPTO | string | 链上转出地址，仅 CRYPTO 订单返回，未产生时可能为空 |
+| `memo` | 仅 CRYPTO | string | 链上附言，仅 CRYPTO 订单返回，未填写时为空 |
+| `transaction_hash` | 仅 CRYPTO | string | 链上交易哈希，仅 CRYPTO 订单返回，未产生时为空 |
+| `tx_hash` | 仅 CRYPTO | string | 交易哈希的兼容字段，与 transaction_hash 相同，仅 CRYPTO 查询返回 |
+| `confirmations` | 仅 CRYPTO | integer | 链上确认数，仅 CRYPTO 订单返回 |
+
+```json
 {
   "code": 0,
-  "message": "操作成功",
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1693233334135,
+  "data": {
+    "mch_id": "MCH12345678",
+    "currency": "INR",
+    "amount": "100.00",
+    "fee": "2.00",
+    "status": "PENDING",
+    "order_no": "PO202609280001",
+    "mch_order_no": "PAYOUT-1001",
+    "utr": "",
+    "receipt": "",
+    "remarks": "",
+    "error": ""
+  }
+}
+```
+
+### 示例：付款成功的订单
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "7eb3c9e-5a1d-4a19-be2a-c80eac39830a",
+  "timestamp": 1594099906123,
   "data": {
     "mch_id": "817710000",
     "mch_order_no": "202007070427475133333",
-    "order_no": "202007070427475133333",
+    "order_no": "PO202007070427475133333",
     "currency": "USD",
     "amount": "99.11",
     "fee": "3.60",
-		"status": "PENDING",
+    "status": "SUCCESS",
     "receipt": "",
-    "error": "",
-    "paid_at": 1594223433
+    "utr": "",
+    "remarks": "",
+    "error": ""
   }
 }
 ```

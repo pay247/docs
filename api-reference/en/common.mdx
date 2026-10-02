@@ -14,7 +14,7 @@ title: 'Introduction'
 "Content-Type":"application/json;charset=UTF-8"
 ```
 
-### Request Header:
+### Response Header:
 ```
 "Content-Type":"application/json;charset=UTF-8"
 ```
@@ -30,10 +30,12 @@ The timezone used by the API is ```UTC+8```
 | Parameter | Must    | Type  |  Explanation    | Example         |
 |:----------|:------|:----|:-------|:-----------|
 | mch_id    | YES     | string   | Merchant ID | SVSPYS63XM10042 |
-| timestamp | YES     | int   | Timestamp | 1594047539321 |
+| timestamp | YES     | int   | Timestamp (integer; milliseconds recommended) | 1594047539321 |
 | version   | YES     | string   | Version | v3.0 |
-| uuid  | YES  | string   | Request ID     |  550e8400-e29b-41d4-a716-446655440000 |
+| uuid  | YES  | string   | Request ID; required for every merchant request and included in the signature     |  550e8400-e29b-41d4-a716-446655440000 |
 | sign      | YES     | string   | Signature     |b05a16b1e92aa4948e164b747b5749b4 |
+
+Every merchant request to the gateway (including create, query, update, approval, balance, and payment-method discovery) must include `uuid` and include it in the signature.
 
 * common response parameters
 
@@ -41,7 +43,7 @@ The timezone used by the API is ```UTC+8```
 |:--------|-----|:--------|---------------|:-----------------|
 | code    | YES   | int     | code , see dict below  | 0                |
 | message | YES   | string  | message     | success             |
-| uuid  | YES  | string   | request uuid     |  550e8400-e29b-41d4-a716-446655440000 |
+| uuid  | YES  | string   | Response ID (from header or server)     |  550e8400-e29b-41d4-a716-446655440000 |
 | timestamp  | YES  | int   | timestamp     |  1599047539321 |
 | data    | YES   | mixed   | data          |   |
 
@@ -72,15 +74,17 @@ The timezone used by the API is ```UTC+8```
 
 ### Pay Method
 
-* pay_method (You can go merchant console to see more)
+See [Payment methods and availability](/api-reference/en/pay_methods) for all codes and the merchant availability endpoint.
 
-| currency  | type  | pay method  | explain   |
-|:-----|:-----|:-----|:-----|
-| USDT    | payin   | TRC20 |   |
-| USDT    | payout   | TRC20 |   |
-| INR    | payin   | UPI | UPI |
-| INR    | payin   | UPI_INTENT | UPI INTENT |
-| INR    | payout   | BANK | IFSC Bank Transfer |
-| PHP    | payin   | GCASH | GCash |
-| PHP    | payin   | MAYA | Maya |
-| PHP    | payout   | BANK | Bank Transfer |
+The original currency and method examples are retained below. Availability still depends on merchant configuration. For crypto, use `pay_method=CRYPTO` and set `network` to `TRC20` or another supported network; `TRC20` and `ERC20` are not payment method codes.
+
+| Currency | Direction | Method | Description |
+|---|---|---|---|
+| USDT | payin | CRYPTO | Tron network: `network=TRC20` |
+| USDT | payout | CRYPTO | Tron network: `network=TRC20` |
+| INR | payin | UPI | UPI QR |
+| INR | payin | UPI_INTENT | UPI intent |
+| INR | payout | BANK | IFSC bank transfer |
+| PHP | payin | GCASH | GCash wallet |
+| PHP | payin | MAYA | Maya wallet |
+| PHP | payout | BANK | Bank transfer |
