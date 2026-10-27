@@ -6,53 +6,34 @@ title: '支付方式与开通情况'
 
 ### 支付方式代码
 
-| 代码 | 名称 |
-|---|---|
-| `UPI` | UPI |
-| `UPI_INTENT` | UPI Intent |
-| `UPI_NATIVE` | UPI Native |
-| `IMPS` | IMPS |
-| `BANK` | Bank |
-| `BANK_BCA` | Bank BCA |
-| `BANK_QR` | Bank QR |
-| `NATIVE_QR` | Native QR |
-| `EWALLET` | EWallet |
-| `WECHAT` | WechatPay |
-| `ALIPAY` | Alipay |
-| `PROMPTPAY` | PromptPay |
-| `THAIQR` | ThaiQR |
-| `GCASH` | GCash |
-| `MAYA` | Maya |
-| `GRABPAY` | GrabPay |
-| `SHOPEEPAY` | ShopeePay |
-| `LINEPAY` | LinePay |
-| `GOTYME` | Gotyme |
-| `MOMO` | Momo |
-| `ZALO` | Zalo |
-| `VIETTEL` | Viettel |
-| `VIETQR` | VietQR |
-| `DANA` | Dana |
-| `QRIS` | QRIS |
-| `DOKUVA` | DOKUVA |
-| `TNG` | Touch‘n Go |
-| `MBB` | MayBank |
-| `TRUEMONEY` | TrueMoney |
-| `SPEI` | SPEI |
-| `BOOST` | Boost |
-| `DUITNOW` | DuitNow |
-| `BNI` | BNI |
-| `BRI` | BRI |
-| `MANDIRI` | MANDIRI |
-| `PERMATA` | PERMATA |
-| `BKASH` | bKash |
-| `NAGAD` | Nagad |
-| `ROCKET` | Rocket |
-| `BCEL` | BCEL |
-| `JAZZCASH` | JAZZCASH |
-| `EASYPAISA` | EASYPAISA |
-| `PAYNOW` | PAYNOW |
-| `CRYPTO` | CRYPTO |
-| `COMMON` | Other |
+| 代码 | 名称 | 币种 | 方向 |
+|---|---|---|---|
+| `UPI` | UPI | INR | 代收 |
+| `UPI_INTENT` | UPI Intent | INR | 代收 |
+| `UPI_NATIVE` | UPI Native | INR | 代收 |
+| `IMPS` | IMPS | INR | 代收/代付 |
+| `BANK` | Bank | VND/SGD/LKR/TWD/IDR/USD  | 代收 |
+| `BANK` | Bank | 所有币种（除USDT）  | 代付 |
+| `BANK_BCA` | Bank BCA | IDR | 代收 |
+| `BANK_QR` | Bank QR | SGD | 代收 |
+| `NATIVE_QR` | Native QR | SGD | 代收 |
+| `EWALLET` | EWallet | USD/KHR/MYR/PKR | 代收 |
+| `PROMPTPAY` | PromptPay | THB | 代收 |
+| `THAIQR` | ThaiQR | THB | 代收 |
+| `THAIQR` | ThaiQR | THB | 代付 |
+| `GCASH` | GCash | PHP | 代收 |
+| `MAYA` | Maya | PHP | 代收/代付 |
+| `MOMO` | Momo | VND | 代收 |
+| `ZALO` | Zalo | VND | 代收 |
+| `VIETQR` | VietQR | VND | 代收 |
+| `DANA` | Dana | IDR | 代收 |
+| `QRIS` | QRIS | IDR | 代收 |
+| `SPEI` | SPEI | MXN | 代收 |
+| `BKASH` | bKash | BDT | 代收 |
+| `NAGAD` | Nagad | BDT | 代收 |
+| `JAZZCASH` | JAZZCASH | PKR | 代收 |
+| `EASYPAISA` | EASYPAISA | PKR | 代收 |
+| `CRYPTO` | CRYPTO | USDT | 代收/代付 |
 
 加密货币订单使用 `pay_method=CRYPTO`，并按代收/代付接口要求传 `network`。`TRC20` 和 `ERC20` 是网络值，不是支付方式代码。`COMMON` 表示其他通道方式，是否可用以接口返回为准。
 

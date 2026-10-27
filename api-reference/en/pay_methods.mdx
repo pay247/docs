@@ -6,53 +6,34 @@ These are the method codes recognized by the gateway. Availability depends on th
 
 ### Method codes
 
-| Code | Name |
-|---|---|
-| `UPI` | UPI |
-| `UPI_INTENT` | UPI Intent |
-| `UPI_NATIVE` | UPI Native |
-| `IMPS` | IMPS |
-| `BANK` | Bank |
-| `BANK_BCA` | Bank BCA |
-| `BANK_QR` | Bank QR |
-| `NATIVE_QR` | Native QR |
-| `EWALLET` | EWallet |
-| `WECHAT` | WechatPay |
-| `ALIPAY` | Alipay |
-| `PROMPTPAY` | PromptPay |
-| `THAIQR` | ThaiQR |
-| `GCASH` | GCash |
-| `MAYA` | Maya |
-| `GRABPAY` | GrabPay |
-| `SHOPEEPAY` | ShopeePay |
-| `LINEPAY` | LinePay |
-| `GOTYME` | Gotyme |
-| `MOMO` | Momo |
-| `ZALO` | Zalo |
-| `VIETTEL` | Viettel |
-| `VIETQR` | VietQR |
-| `DANA` | Dana |
-| `QRIS` | QRIS |
-| `DOKUVA` | DOKUVA |
-| `TNG` | Touch‘n Go |
-| `MBB` | MayBank |
-| `TRUEMONEY` | TrueMoney |
-| `SPEI` | SPEI |
-| `BOOST` | Boost |
-| `DUITNOW` | DuitNow |
-| `BNI` | BNI |
-| `BRI` | BRI |
-| `MANDIRI` | MANDIRI |
-| `PERMATA` | PERMATA |
-| `BKASH` | bKash |
-| `NAGAD` | Nagad |
-| `ROCKET` | Rocket |
-| `BCEL` | BCEL |
-| `JAZZCASH` | JAZZCASH |
-| `EASYPAISA` | EASYPAISA |
-| `PAYNOW` | PAYNOW |
-| `CRYPTO` | CRYPTO |
-| `COMMON` | Other |
+| Code | Name | Currency | Direction |
+|---|---|---|---|
+| `UPI` | UPI | INR | payin |
+| `UPI_INTENT` | UPI Intent | INR | payin |
+| `UPI_NATIVE` | UPI Native | INR | payin |
+| `IMPS` | IMPS | INR | payin/payout |
+| `BANK` | Bank | VND/SGD/LKR/TWD/IDR/USD  | payin |
+| `BANK` | Bank | All currencies (except USDT)  | payout |
+| `BANK_BCA` | Bank BCA | IDR | payin |
+| `BANK_QR` | Bank QR | SGD | payin |
+| `NATIVE_QR` | Native QR | SGD | payin |
+| `EWALLET` | EWallet | USD/KHR/MYR/PKR | payin |
+| `PROMPTPAY` | PromptPay | THB | payin |
+| `THAIQR` | ThaiQR | THB | payin |
+| `THAIQR` | ThaiQR | THB | payout |
+| `GCASH` | GCash | PHP | payin |
+| `MAYA` | Maya | PHP | payin/payout |
+| `MOMO` | Momo | VND | payin |
+| `ZALO` | Zalo | VND | payin |
+| `VIETQR` | VietQR | VND | payin |
+| `DANA` | Dana | IDR | payin |
+| `QRIS` | QRIS | IDR | payin |
+| `SPEI` | SPEI | MXN | payin |
+| `BKASH` | bKash | BDT | payin |
+| `NAGAD` | Nagad | BDT | payin |
+| `JAZZCASH` | JAZZCASH | PKR | payin |
+| `EASYPAISA` | EASYPAISA | PKR | payin |
+| `CRYPTO` | CRYPTO | USDT | payin/payout |
 
 For crypto orders, send `pay_method=CRYPTO` and provide `network` as specified by the create endpoint. `TRC20` and `ERC20` are network values, not payment method codes. `COMMON` represents other channel methods. Check the API result for availability.
 
