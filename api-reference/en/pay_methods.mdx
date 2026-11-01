@@ -33,6 +33,8 @@ These are the method codes recognized by the gateway. Availability depends on th
 | `NAGAD` | Nagad | BDT | payin |
 | `JAZZCASH` | JAZZCASH | PKR | payin |
 | `EASYPAISA` | EASYPAISA | PKR | payin |
+| `KBZPAY` | KbzPay | MMK | 代收 |
+| `WAVEPAY` | WavePay | MMK | 代收 |
 | `CRYPTO` | CRYPTO | USDT | payin/payout |
 
 For crypto orders, send `pay_method=CRYPTO` and provide `network` as specified by the create endpoint. `TRC20` and `ERC20` are network values, not payment method codes. `COMMON` represents other channel methods. Check the API result for availability.
