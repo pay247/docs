@@ -48,6 +48,7 @@ POST
 | `currency` | 是 | string | 订单币种 |
 | `pay_method` | 是 | string | 实际支付方式代码 |
 | `pay_theme` | 是 | string | 支付主题，通常为 link 或 custom |
+| `payer_name` | 是 | string | 付款人姓名，可能为空 |
 | `amount` | 是 | string | 订单金额，以订单币种计 |
 | `fee` | 是 | string | 订单手续费，以订单币种计 |
 | `status` | 是 | string | PENDING、DEALING、TIMEOUT、CLOSED、SUCCESS、FAIL、REFUND、UNDERPAID、OVERPAID |
@@ -76,6 +77,7 @@ POST
     "pay_method": "UPI",
     "fee": "1.00",
     "pay_theme": "link",
+    "payer_name": "Jon",
     "utr": "",
     "error": "",
     "status": "PENDING",
@@ -103,6 +105,7 @@ POST
     "pay_method": "UPI",
     "fee": "1495.00",
     "pay_theme": "custom",
+    "payer_name": "Jon",
     "utr": "395141536523",
     "error": "",
     "status": "PENDING",
@@ -136,6 +139,7 @@ POST
     "pay_method": "BANK",
     "fee": "1.99",
     "pay_theme": "link",
+    "payer_name": "Jon",
     "utr": "",
     "error": "",
     "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr",

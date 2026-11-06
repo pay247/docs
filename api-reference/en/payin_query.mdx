@@ -48,6 +48,7 @@ POST
 | `currency` | Yes | string | Order currency |
 | `pay_method` | Yes | string | Selected payment method code |
 | `pay_theme` | Yes | string | Payment theme, usually link or custom |
+| `payer_name` | Yes | string | Payer Name (May be empty) |
 | `amount` | Yes | string | Order amount in the order currency |
 | `fee` | Yes | string | Order fee in the order currency |
 | `status` | Yes | string | PENDING, DEALING, TIMEOUT, CLOSED, SUCCESS, FAIL, REFUND, UNDERPAID, OVERPAID |
@@ -76,6 +77,7 @@ POST
     "pay_method": "UPI",
     "fee": "1.00",
     "pay_theme": "link",
+    "payer_name": "Jon",
     "utr": "",
     "error": "",
     "status": "PENDING",
@@ -103,6 +105,7 @@ This retains the original example’s `fee`, `utr`, and `pay_params`, which belo
     "pay_method": "UPI",
     "fee": "1495.00",
     "pay_theme": "custom",
+    "payer_name": "Jon",
     "utr": "395141536523",
     "error": "",
     "status": "PENDING",
@@ -136,6 +139,7 @@ This retains the original example’s `fee`, `utr`, and `pay_params`, which belo
     "pay_method": "BANK",
     "fee": "1.99",
     "pay_theme": "link",
+    "payer_name": "Jon",
     "utr": "",
     "error": "",
     "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr",
