@@ -87,6 +87,13 @@
       ]
     },
     {
+      "version": "English",
+      "group": "Documentation updates",
+      "pages": [
+        "api-reference/en/documentation_changelog"
+      ]
+    },
+    {
       "version": "中文",
       "group": "快速开始",
       "pages": [
@@ -120,6 +127,13 @@
         "api-reference/cn/payout_query",
         "api-reference/cn/payout_notify",
         "api-reference/cn/payout_approve"
+      ]
+    },
+    {
+      "version": "中文",
+      "group": "文档更新",
+      "pages": [
+        "api-reference/cn/documentation_changelog"
       ]
     },
     {

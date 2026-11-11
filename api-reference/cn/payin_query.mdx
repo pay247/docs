@@ -50,7 +50,7 @@ POST
 | `pay_theme` | 是 | string | 支付主题，通常为 link 或 custom |
 | `amount` | 是 | string | 订单金额，以订单币种计 |
 | `fee` | 是 | string | 订单手续费，以订单币种计 |
-| `status` | 是 | string | PENDING、DEALING、TIMEOUT、CLOSED、SUCCESS、FAIL、REFUND、UNDERPAID、OVERPAID |
+| `status` | 是 | string | PENDING、DEALING、TIMEOUT、CLOSED、SUCCESS、FAIL、REFUND（已退款）、UNDERPAID、OVERPAID |
 | `utr` | 是 | string | 交易参考号，未产生时为空 |
 | `error` | 是 | string | 错误信息，可能为空 |
 | `actual_amount` | 否 | string | 成功、少付或多付时返回 |
@@ -60,6 +60,14 @@ POST
 | `to_address` | 仅 CRYPTO | string | 链上收款地址，仅 CRYPTO 订单返回，尚未分配时可能为空 |
 | `confirmations` | 仅 CRYPTO | integer | 链上确认数，仅 CRYPTO 订单返回 |
 | `transaction_hash` | 仅 CRYPTO | string | 链上交易哈希，仅 CRYPTO 订单返回，未产生时为空 |
+
+### 退款状态
+
+`data.status` 为 `REFUND` 表示系统已完成该订单的退款处理，不表示退款申请中。退款状态通过现有的 `status` 字段返回，无新增退款状态字段。
+
+商户应将该订单更新为已退款，不应继续按支付成功处理。`amount` 和 `fee` 分别表示原订单金额和订单手续费，不表示实际退款金额。退款回调格式见[代收订单回调](/api-reference/cn/payin_notify#退款状态)。
+
+### 示例：待支付的订单
 
 ```json
 {
@@ -140,6 +148,31 @@ POST
     "error": "",
     "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr",
     "status": "SUCCESS"
+  }
+}
+```
+
+### 示例：已退款的订单
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1794412800000,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "PAYIN-1001",
+    "order_no": "PI202609280001",
+    "currency": "INR",
+    "amount": "99.11",
+    "pay_method": "UPI",
+    "fee": "1.00",
+    "pay_theme": "link",
+    "utr": "123456789012",
+    "error": "",
+    "status": "REFUND",
+    "pay_url": "https://checkout.example/pay/PI202609280001"
   }
 }
 ```

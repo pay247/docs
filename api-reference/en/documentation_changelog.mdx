@@ -1,0 +1,13 @@
+---
+title: 'API documentation changelog'
+description: 'Changes to the public API documentation and integration notes.'
+---
+
+## 2026-11-12
+
+### Document payin refund status
+
+- [Query payin](/api-reference/en/payin_query#refund-status): clarify that `data.status = REFUND` means refunded, and add a status explanation and query response example.
+- [Payin notification](/api-reference/en/payin_notify#refund-status): add `REFUND` (refunded) to the documented `status` values, provide a refund notification example, and explain refund status changes after payment success and idempotent handling of duplicate notifications.
+- Refund status uses the existing `status` field, with no new request parameters or response fields. `amount` and `fee` still represent the original order amount and order fee; neither represents the actual refund amount.
+- Add this page and its navigation entry. Future API documentation changes will be listed in reverse chronological order.

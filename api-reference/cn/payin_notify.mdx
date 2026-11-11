@@ -4,14 +4,14 @@ title: '代收订单回调'
 
 ### 通知URL
 
-网关向创建订单时的 `notify_url` 发送 `POST` JSON。商户应验证 `sign`，按 `mch_order_no` 幂等处理，并返回纯文本 `SUCCESS`（忽略大小写和首尾空白）。其他响应会触发重试；查询接口可用于核对最终状态。回调体没有 `pay_theme`。
+网关向创建订单时的 `notify_url` 发送 `POST` JSON。商户应验证 `sign`，按 `mch_order_no` 识别订单并对同一状态的重复通知幂等处理，同时处理该订单后续的状态变化，并返回纯文本 `SUCCESS`（忽略大小写和首尾空白）。其他响应会触发重试；查询接口可用于核对最终状态。回调体没有 `pay_theme`。
 
 | 参数 | 是否出现 | 类型 | 说明 |
 |---|---|---|---|
 | `mch_id` | 始终 | string | 商户号，标识该订单所属商户 |
 | `mch_order_no` | 始终 | string | 商户提交的订单号 |
 | `order_no` | 始终 | string | Pay247 生成的平台订单号 |
-| `status` | 始终 | string | 订单状态；按实际状态处理，可能包含 SUCCESS、FAIL、CLOSED、UNDERPAID、OVERPAID |
+| `status` | 始终 | string | 订单状态；按实际状态处理，可能包含 SUCCESS、FAIL、CLOSED、UNDERPAID、OVERPAID、REFUND（已退款） |
 | `currency` | 始终 | string | 订单币种 |
 | `pay_method` | 始终 | string | 实际支付方式代码 |
 | `amount` | 始终 | string | 订单金额，以订单币种计 |
@@ -37,6 +37,34 @@ title: '代收订单回调'
   "created_at": 1693233334134,
   "paid_at": 1693233344134,
   "actual_amount": "99.11",
+  "utr": "123456789012",
+  "sign": "<computed signature>"
+}
+```
+
+### 退款状态
+
+收到 `status` 为 `REFUND` 的通知，表示系统已完成该订单的退款处理，不表示退款申请中。退款状态使用现有的 `status` 字段，无新增退款状态字段；签名校验及通知确认方式与其他代收通知相同。
+
+即使此前已处理同一订单的 `SUCCESS` 通知，也应处理后续的 `REFUND` 通知，将订单更新为已退款；同一退款通知重复送达时，不得重复执行退款业务操作。状态存在疑问时，请通过[查询代收订单](/api-reference/cn/payin_query)核对。
+
+`amount` 和 `fee` 仍表示原订单金额和订单手续费，不表示实际退款金额。`actual_amount` 为条件性字段，退款通知中不保证返回。
+
+#### 示例：已退款通知
+
+```json
+{
+  "mch_id": "MCH12345678",
+  "mch_order_no": "PAYIN-1001",
+  "order_no": "PI202609280001",
+  "status": "REFUND",
+  "currency": "INR",
+  "pay_method": "UPI",
+  "amount": "99.11",
+  "fee": "1.00",
+  "error": "",
+  "created_at": 1693233334134,
+  "paid_at": 1693233344134,
   "utr": "123456789012",
   "sign": "<computed signature>"
 }

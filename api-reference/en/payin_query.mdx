@@ -50,7 +50,7 @@ POST
 | `pay_theme` | Yes | string | Payment theme, usually link or custom |
 | `amount` | Yes | string | Order amount in the order currency |
 | `fee` | Yes | string | Order fee in the order currency |
-| `status` | Yes | string | PENDING, DEALING, TIMEOUT, CLOSED, SUCCESS, FAIL, REFUND, UNDERPAID, OVERPAID |
+| `status` | Yes | string | PENDING, DEALING, TIMEOUT, CLOSED, SUCCESS, FAIL, REFUND (refunded), UNDERPAID, OVERPAID |
 | `utr` | Yes | string | Transaction reference; empty if unavailable |
 | `error` | Yes | string | Error, possibly empty |
 | `actual_amount` | No | string | Returned on success, underpayment, or overpayment |
@@ -60,6 +60,14 @@ POST
 | `to_address` | CRYPTO only | string | Destination wallet address; returned only for CRYPTO orders and may be empty before assignment |
 | `confirmations` | CRYPTO only | integer | On-chain confirmation count; returned only for CRYPTO orders |
 | `transaction_hash` | CRYPTO only | string | On-chain transaction hash; returned only for CRYPTO orders and empty before available |
+
+### Refund status
+
+`data.status` equal to `REFUND` means the system has completed refund processing for the order. It does not mean a refund request is pending. Refund status uses the existing `status` field; no separate refund status field is added.
+
+Update the order to refunded instead of continuing to treat it as a successful payment. `amount` and `fee` represent the original order amount and order fee, respectively; neither represents the actual refund amount. See [Payin notification](/api-reference/en/payin_notify#refund-status) for the refund callback format.
+
+### For example: pending payin
 
 ```json
 {
@@ -140,6 +148,31 @@ This retains the original example’s `fee`, `utr`, and `pay_params`, which belo
     "error": "",
     "pay_url": "https://pay.xxx.com/link/DyDpCjDfkr",
     "status": "SUCCESS"
+  }
+}
+```
+
+### For example: refunded payin
+
+```json
+{
+  "code": 0,
+  "message": "success",
+  "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": 1794412800000,
+  "data": {
+    "mch_id": "MCH12345678",
+    "mch_order_no": "PAYIN-1001",
+    "order_no": "PI202609280001",
+    "currency": "INR",
+    "amount": "99.11",
+    "pay_method": "UPI",
+    "fee": "1.00",
+    "pay_theme": "link",
+    "utr": "123456789012",
+    "error": "",
+    "status": "REFUND",
+    "pay_url": "https://checkout.example/pay/PI202609280001"
   }
 }
 ```
