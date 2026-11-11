@@ -18,6 +18,7 @@ The gateway sends `POST` JSON to the `notify_url` supplied at creation. Verify `
 | `fee` | Always | string | Order fee in the order currency |
 | `error` | Always | string | Error; may be empty |
 | `created_at` | Always | integer | Created time, milliseconds |
+| `payer_name` | Conditional | string | Only returned when the payer's name exists. |
 | `paid_at` | Conditional | integer | Only when a paid time exists |
 | `actual_amount` | Conditional | string | For allowed under/overpayment or paid v3.0 orders |
 | `utr` | Conditional | string | Only for non-FAIL INR orders; may be empty |
@@ -36,6 +37,7 @@ The gateway sends `POST` JSON to the `notify_url` supplied at creation. Verify `
   "error": "",
   "created_at": 1693233334134,
   "paid_at": 1693233344134,
+  "payer_name": "Jon",
   "actual_amount": "99.11",
   "utr": "123456789012",
   "sign": "<computed signature>"

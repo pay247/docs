@@ -18,6 +18,7 @@ title: '代收订单回调'
 | `fee` | 始终 | string | 订单手续费，以订单币种计 |
 | `error` | 始终 | string | 错误信息，可能为空 |
 | `created_at` | 始终 | integer | 创建时间，毫秒时间戳 |
+| `payer_name` | 条件性 | string | 有付款人姓名时才返回 |
 | `paid_at` | 条件性 | integer | 有支付时间时才返回 |
 | `actual_amount` | 条件性 | string | 商户允许多付/少付或 v3.0 已支付状态时返回 |
 | `utr` | 条件性 | string | 仅非 FAIL 的 INR 订单返回，值可能为空 |
@@ -36,6 +37,7 @@ title: '代收订单回调'
   "error": "",
   "created_at": 1693233334134,
   "paid_at": 1693233344134,
+  "payer_name": "Jon",
   "actual_amount": "99.11",
   "utr": "123456789012",
   "sign": "<computed signature>"
