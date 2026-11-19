@@ -25,7 +25,7 @@ POST
 | `currency` | 是 | string | 订单币种；可用组合见支付方式接口 |
 | `amount` | 是 | number | 订单金额；须满足通道限额 |
 | `notify_url` | 是 | URL | 异步通知地址 |
-| `pay_method` | 否 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods)；加密货币使用 `CRYPTO`，`TRC20` 和 `ERC20` 应填入 `network`；省略时由通道选择 |
+| `pay_method` | 条件必填 | string | 支付方式代码，见[目录](/api-reference/cn/pay_methods)；`pay_theme=custom` 时必须传入非空值；默认或 `link` 收银台可省略，由付款人在收银台选择。加密货币使用 `CRYPTO`，`TRC20` 和 `ERC20` 应填入 `network` |
 | `network` | 条件必填 | string | CRYPTO 时必填：TRC20、ERC20、BEP20、SOLANA、ARBITRUM |
 | `pay_theme` | 否 | string | link（默认）或 custom |
 | `mch_user_id` | 否 | string | 商户用户标识 |
@@ -50,6 +50,8 @@ POST
 | `sign` | 是 | string | 签名 |
 
 使用 `CRYPTO` 时币种必须为 `USDT`；网络只放在 `network` 字段。
+
+`pay_theme=custom` 时，`pay_method` 缺失、为 `null`、空字符串或纯空白均返回 `code=4000`，错误提示为 `The pay_method field is required when pay_theme is custom.`；请求不会创建订单或提交到渠道。
 
 `mch_user_id` 可用于未支付订单排查；如需隐藏原始用户标识，可在传入前做单向摘要。部分通道要求付款人资料，具体必填项请结合[支付方式查询](/api-reference/cn/pay_methods)返回的 `required` 与通道配置。
 
